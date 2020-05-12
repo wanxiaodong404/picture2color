@@ -1,0 +1,23 @@
+{
+  "name": "picture2color",
+  "version": "0.0.1",
+  "description": "图片颜色获取",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sheldonWan/picture2color.git"
+  },
+  "author": "wanxiaodong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sheldonWan/picture2color/issues"
+  },
+  "homepage": "https://github.com/sheldonWan/picture2color#readme",
+  "dependencies": {
+    "webpack": "^4.43.0",
+    "webpack-dev-server": "^3.11.0"
+  }
+}
