@@ -1,24 +1,31 @@
 {
-  "name": "picture2color",
-  "version": "0.0.1",
-  "description": "图片颜色获取",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sheldonWan/picture2color.git"
-  },
-  "author": "wanxiaodong",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/sheldonWan/picture2color/issues"
-  },
-  "homepage": "https://github.com/sheldonWan/picture2color#readme",
-  "dependencies": {},
-  "devDependencies": {
-    "webpack": "^4.43.0",
-    "webpack-dev-server": "^3.11.0"
-  }
+    "name": "picture2color",
+    "version": "0.0.1",
+    "description": "图片颜色获取",
+    "main": "index.js",
+    "scripts": {
+        "build": "webpack --config ./build/webpack.build.prod.js",
+        "build:dev": "webpack-dev-server --config ./build/webpack.build.dev.js -w",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sheldonWan/picture2color.git"
+    },
+    "author": "wanxiaodong",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/sheldonWan/picture2color/issues"
+    },
+    "homepage": "https://github.com/sheldonWan/picture2color#readme",
+    "dependencies": {
+        "events": "^3.2.0"
+    },
+    "devDependencies": {
+        "babel-loader": "^8.1.0",
+        "html-webpack-plugin": "^4.4.1",
+        "webpack": "^4.43.0",
+        "webpack-cli": "^3.3.12",
+        "webpack-dev-server": "^3.11.0"
+    }
 }

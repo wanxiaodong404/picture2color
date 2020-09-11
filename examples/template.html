@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img {
+            display: block;
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id='block' class="show-block" style="height: 40px;border: 1px solid #ccc;margin-bottom: 25px;"></div>
+    <script>
+        let pms = new Picture2color('./assets/pic11.jpg', {event: ['click']}, document.getElementById('block'))
+        pms.then(demo => {
+            console.log(demo)
+            document.body.insertAdjacentElement('afterbegin', demo.__el)
+
+            let map = demo.colorData.mainColor
+            let fr = document.createDocumentFragment()
+            map.forEach(item => {
+                let dom = document.createElement('div')
+                dom.height = 10
+                dom.style.background = item.value
+                if (item.isDeep) (dom.style.color = '#fff')
+                dom.innerText = `${item.value} ---- ${item.percent}%`
+                fr.appendChild(dom)
+            })
+            document.body.appendChild(fr);
+        });
+    </script>
+</body>
+</html>
