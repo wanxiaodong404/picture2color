@@ -14,12 +14,11 @@
 <body>
     <div id='block' class="show-block" style="height: 40px;border: 1px solid #ccc;margin-bottom: 25px;"></div>
     <script>
-        let pms = new Picture2color('./assets/pic11.jpg', {event: ['click']}, document.getElementById('block'))
+        let pms = new Picture2color('./assets/pic9.jpeg', {event: ['click']}, document.getElementById('block'))
         pms.then(demo => {
             console.log(demo)
             document.body.insertAdjacentElement('afterbegin', demo.__el)
-
-            let map = demo.colorData.mainColor
+            let map = demo.colorData.getBorderColor()
             let fr = document.createDocumentFragment()
             map.forEach(item => {
                 let dom = document.createElement('div')

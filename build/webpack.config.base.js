@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-09-09 13:37:07
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-09-11 18:00:46
+ * @Last Modified time: 2020-09-18 17:56:40
  * @Description:
  */
 const path = require('path')
@@ -17,5 +17,16 @@ module.exports = {
         umdNamedDefine: true,
         path: path.resolve(__dirname, '../dist/'),
         filename: '[name].js'
+    },
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /(node_modules)/,
+                use: {
+                    loader: 'babel-loader'
+                }
+            }
+        ]
     }
 }

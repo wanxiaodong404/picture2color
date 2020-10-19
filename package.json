@@ -19,10 +19,16 @@
     },
     "homepage": "https://github.com/sheldonWan/picture2color#readme",
     "dependencies": {
+        "@babel/plugin-proposal-class-properties": "^7.10.4",
+        "@babel/plugin-syntax-class-properties": "^7.10.4",
         "events": "^3.2.0"
     },
     "devDependencies": {
+        "@babel/core": "^7.11.6",
+        "@babel/plugin-transform-runtime": "^7.11.5",
+        "@babel/preset-env": "^7.11.5",
         "babel-loader": "^8.1.0",
+        "babel-runtime": "^6.26.0",
         "html-webpack-plugin": "^4.4.1",
         "webpack": "^4.43.0",
         "webpack-cli": "^3.3.12",
