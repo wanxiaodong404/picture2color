@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:27:03
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-19 18:05:12
+ * @Last Modified time: 2020-10-20 17:27:02
  * @Description: 色值分析
  */
 
@@ -19,22 +19,27 @@ class ColorAnalyse {
         let {width, height} = colorData;
         this.width = width
         this.height = height
-        this.colorMap = this.analyse(colorData);
+        let {colorMap, translateData} = this.analyse(colorData);
+        this.colorMap = colorMap;
+        this.translateData = translateData;
     }
     /**
      * 颜色数据分析
      * @param {*} data
      */
     analyse(data) {
-        let {width, height, data: arr} = data;
-        arr = this.colorFormat(arr, width, height);
-        return this.colorPercent(arr, width, height)
+        let {width, height, data: _data} = data;
+        data = this.colorFormat(_data, width, height);
+        return {
+            translateData: {width, height, data},
+            colorMap: this.colorPercent(data)
+        }
     }/**
      *  格式化颜色数据
-     * @param {*} arr
+     * @param {*} data
      */
-    colorFormat(arr, width, height) {
-        return Array.prototype.slice.call(arr).reduce((item1, item2, index) => {
+    colorFormat(data, width, height) {
+        return Array.prototype.slice.call(data).reduce((item1, item2, index) => {
             let result = item1
             if (index === 1) {
                 result = {
@@ -57,55 +62,67 @@ class ColorAnalyse {
     }
     /**
      * 每个色值的占比
-     * @param {*} arr
-     * @param {*} width
-     * @param {*} height
+     * @param {*} data
      */
-    colorPercent(arr, width, height) {
+    colorPercent(data) {
         let temp = {}
         let _color = null;
-        arr.forEach(item => {
+        data.forEach(item => {
             let color = Color.data2color(item.data);
             if (temp[color]) {
-                temp[color].count()
+                temp[color].count();
             } else {
                 // _color = new Color(item.data);
                 _color = _color ? _color.groupFactory(item.data) : new Color(item.data);
                 temp[color] = _color
-                temp[color].setPosition(...item.position)
             }
         })
-        return Object.values(temp)
+        return Object.values(temp).sort((color, color2) => color2.__count - color.__count)
     }
     /**
      * 获取图片主要色值
+     * @{colorStep} Number
      * @{data} Array
      */
-    getMainColor(data) {
-        data = data || this.colorMap.color
-        let map = new Map();
+    getMainColor(option = {}, data) {
+        data = data || this.colorMap
+        let {colorStep} = option;
+        colorStep = colorStep || this.option.colorStep
+        let map = new Set();
         let _color = null;
         data.forEach(item => {
             let hasNoColor = true;
             map.forEach((value, key) => {
-                if (Picture2color.isSimilarColor(value, item, this.option.colorStep)) {
+                if (Picture2color.isSimilarColor(value, item, colorStep)) {
                     hasNoColor = false
-                    value.count(item.__count)
+                    value.count()
+                    value.contact(item)
                 }
             })
             if (hasNoColor) {
-                _color = _color ? Color.clone(item, _color.__gid) : Color.clone(item)
-                map.set(item.value, _color)
+                _color = _color ? _color.groupFactory(item) : Color.clone(item)
+                map.add(_color)
             }
         })
-        return map
+        return Array.from(map).sort((color, color2) => color2.__count - color.__count)
     }
-    getBorderColor(colorAnalyse, size = 0.2) {
-        let {width, height, colorMap: data} = colorAnalyse || this;
-        let _data = data.filter(item => {
-            return item.__x >= width * (1 - size) || item.__x <= width * size || item.__y >= height * (1 - size) || item.__y <= height * size
-        })
-        return this.getMainColor(_data)
+    /**
+     * 以边框向内方向获取范围主要色值
+     * @param {*} option
+     * @param {*} colorAnalyse
+     */
+    getBorderColor(option = {}, colorAnalyse) {
+        let {width, height, translateData} = colorAnalyse || this;
+        let {size = 0.2, colorStep} = option
+        let leftX = size * width,
+            rightX = (1 - size) * width,
+            topY = size * height,
+            bottomY = (1 - size) * height;
+        let _data = translateData.data.filter(item => {
+            return (item.position[0] <= leftX || item.position[0] >= rightX) && (item.position[1] >= bottomY || item.position[1] <=topY)
+        });
+        _data = this.colorPercent(_data)
+        return this.getMainColor({colorStep}, _data)
     }
     /**
      * 销毁

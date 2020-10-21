@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:36:09
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-19 16:55:58
+ * @Last Modified time: 2020-10-20 18:08:36
  * @Description:
  */
 const events = require('events')
@@ -18,16 +18,8 @@ class Picture2color extends events {
         this.originColorData = null
         this.colorData = null;
         this.option = Object.assign({}, defaultOption, (option || {}));
-        this.__eventCach = [];
-        this.__showBlock = null;
         this.__el = null;
-        if (showBlock) {
-            if (typeof showBlock === 'string') {
-                this.__showBlock = (document.querySelectorAll(showBlock) || [])[0]
-            } else {
-                this.__showBlock = showBlock
-            }
-        }
+        this.__cache = {};
         if (image instanceof Image) {
             this.__el = image || null;
             if (image.complete) {
@@ -51,13 +43,12 @@ class Picture2color extends events {
                 image.src = url
             })
         } else {
-            console.warn('请传入合法参数')
-            return null
+            throw Error('请传入合法参数')
         }
     }
     init(image) {
-        this.getColorData(image)
         this.getImageColor = Picture2color.getImageColor;
+        this.getColorData(image)
         this.destory = Picture2color.destory;
         this.option.event && this.bindEvent(this.option.event);
     }
@@ -67,33 +58,38 @@ class Picture2color extends events {
      */
     bindEvent(eventType = []) {
         let that = this;
-        this.__eventCach = eventType.map((type) => {
+        let {width, height} = this.originColorData;
+        let event = eventType.map((type) => {
             let callback = function(event) {
-                let color = Picture2color.getImageColor(that.__el, event.x - this.offsetLeft, event.y - this.offsetTop)
-                that.emit('color.inner', {
+                let _width = that.__el.offsetWidth;
+                let _height = that.__el.offsetHeight;
+                let x = Number.parseInt((event.x - that.__el.offsetLeft) / _width * width);
+                let y = Number.parseInt((event.y - that.__el.offsetTop) / _height * height);
+                let color = that.getImageColor(x, y, that.__el)
+                that.emit('color', {
                     type,
-                    position: `${event.x - this.offsetLeft} ${event.y - this.offsetTop}`,
-                    data: color
+                    eventPosition: [event.x, event.y],
+                    color: color
                 })
-                if (that.__showBlock) {
-                    that.__showBlock.style.background = color.value
-                }
             };
             this.__el.addEventListener(type, callback)
             return {
                 type,
                 callback
             }
-        })
+        });
+        this.__cache.event = event
     }
     /**
      * 解绑事件
      */
     unbindEvent() {
         let that = this;
-        this.__eventCach.forEach(({type, callback}) => {
-            that.__el.removeEventListener(type, callback)
-        })
+        if (this.__cache.event) {
+            this.__cache.event.forEach(({type, callback}) => {
+                that.__el.removeEventListener(type, callback)
+            })
+        }
     }
     /**
      * 获取图片的颜色数据
@@ -111,14 +107,48 @@ class Picture2color extends events {
         this.colorData = new ColorAnalyse(data);
     }
     /**
+     *
+     * @param {Color | [rgba]} color
+     */
+    colorFilter(color) {
+        let {translateData, colorMap} = this.colorData;
+        if (color instanceof Color) {
+            // Color
+            if (color.isRange) {
+                return translateData.data.filter(item => {
+                    return color.isContact(item.data)
+                })
+
+            } else {
+                let dataString = color.data.toString();
+                return translateData.data.filter(item => {
+                    return item.data.toString() === dataString
+                })
+            }
+        } else if(color.length === 4) {
+            // [rgba]
+            let dataString = color.toString();
+            return translateData.data.filter(item => {
+                return item.data.toString() === dataString
+            })
+        } else {
+            // rgba(0,0,0,1)
+            return translateData.data.filter(item => {
+                return Color.data2color(item.data) === color
+            })
+        }
+    }
+    /**
      * 销毁实例
      * @param {*} instance
      */
     static destory(instance) {
         instance = instance || this
         instance.unbindEvent()
-        instance.__eventCach = null;
-        instance.__showBlock = null;
+        Object.keys(instance.__cache).forEach(key => {
+            delete instance.__cache[key]
+        })
+        instance.__cache = null;
         instance.originColorData = null;
         instance.option = null;
         instance.__el = null;
@@ -128,26 +158,28 @@ class Picture2color extends events {
     }
     /**
      * 获取图片坐标内色值
-     * @param {*} image
      * @param {*} x
      * @param {*} y
+     * @param {*} image
      * @param {*} isPiex
      */
-    static getImageColor(image, x = 0, y = 0, isPiex = true) {
+    static getImageColor(x = 0, y = 0, image, isPiex = true) {
         try {
-            let {width, height} = image;
-            let canvas = document.createElement('canvas');
+            let instance = this instanceof Picture2color ? this : null; // 实例化
+            let {width, height} = instance ? (this.__el || image) : image;
+            let canvas = instance ? (this.__cache.canvas || document.createElement('canvas')) : document.createElement('canvas');
+            instance && (this.__cache.canvas = canvas);
             canvas.width = width
             canvas.height = height
             let ctx = canvas.getContext('2d')
             ctx.drawImage(image, 0, 0, width, height, 0, 0, width, height);
             if (!isPiex) {
+                // 百分比模式
                 x = Math.round(x * width * 0.01);
                 y = Math.round(y * height * 0.01);
             }
             let data = ctx.getImageData(x, y, 1, 1);
             let color = new Color(data.data)
-            color.setPosition(x, y)
             return color
         } catch (e) {
             console.warn('获取数据失败')
