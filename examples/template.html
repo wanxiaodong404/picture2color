@@ -14,19 +14,20 @@
 <body>
     <div id='block' class="show-block" style="height: 40px;border: 1px solid #ccc;margin-bottom: 25px;"></div>
     <script>
+        // let pms = new Picture2color('./assets/lei.jpg', {event: ['click']})
         let pms = new Picture2color('./assets/pic9.jpeg', {event: ['click']})
         pms.then(demo => {
             console.log(window.demo = demo)
             let block = document.getElementById('block')
             demo.on('color', function(e) {
                 block.style.background = e.color.value
-                drawColor(demo.colorFilter(e.color))
-                console.log(e)
+                console.log(`%c event: ${e.type} color: ${e.color.value}`, `background: ${e.color.isDeep ? '#ccc' : '#000'};color:${e.color.toColorString(1)}`)
 
             })
             document.body.insertAdjacentElement('afterbegin', demo.__el)
-            let map = demo.colorData.getBorderColor({size: 0.5, colorStep: 60})
-            // let map = demo.colorData.getMainColor()
+            // let map = demo.colorData.getBorderColor({size: 0.2, colorStep: 60})
+            let map = demo.colorData.getMainColor()
+            console.log(demo.isDeep(map))
             let fr = document.createDocumentFragment()
             console.log(map)
             map.forEach(item => {
@@ -37,31 +38,32 @@
                 dom.innerText = `${item.value} ---- ${item.percent}%`;
                 (function() {
                     dom.addEventListener('click', function() {
-                        drawColor(demo.colorFilter(item))
+                        // drawColor(demo.colorFilter_bate(item))
+                        console.log(demo.isDeep(item))
                     })
                 })(item)
                 fr.appendChild(dom)
             })
             document.body.appendChild(fr);
-            let canvas = document.createElement('canvas')
-            document.body.insertAdjacentElement('afterbegin', canvas)
-            let ctx = canvas.getContext('2d')
-            let {width, height} = demo.colorData
-            canvas.width = width
-            canvas.height = height
-            function drawColor(color) {
-                console.log(color)
-                ctx.clearRect(0, 0, width, height)
-                ctx.drawImage(demo.__cache.canvas, 0, 0, width, height)
-                // console.log(color);
-                console.log('get data done')
-                color.forEach(item => {
-                    ctx.strokeStyle = 'red'
-                    ctx.strokeRect(...item.position, 1, 1)
-                    ctx.stroke();
-                })
-                console.log('draw canvas done')
-            }
+            // let canvas = document.createElement('canvas')
+            // document.body.insertAdjacentElement('afterbegin', canvas)
+            // let ctx = canvas.getContext('2d')
+            // let {width, height} = demo.colorData
+            // canvas.width = width
+            // canvas.height = height
+            // function drawColor(color) {
+            //     console.log(color)
+            //     ctx.clearRect(0, 0, width, height)
+            //     ctx.drawImage(demo.__cache.canvas, 0, 0, width, height)
+            //     // console.log(color);
+            //     console.log('get data done')
+            //     color.forEach(item => {
+            //         ctx.strokeStyle = 'red'
+            //         ctx.strokeRect(...item.position, 1, 1)
+            //         ctx.stroke();
+            //     })
+            //     console.log('draw canvas done')
+            // }
         });
     </script>
 </body>

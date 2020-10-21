@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:36:09
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-20 18:08:36
+ * @Last Modified time: 2020-10-21 17:43:25
  * @Description:
  */
 const events = require('events')
@@ -20,6 +20,7 @@ class Picture2color extends events {
         this.option = Object.assign({}, defaultOption, (option || {}));
         this.__el = null;
         this.__cache = {};
+        this.utils = utils
         if (image instanceof Image) {
             this.__el = image || null;
             if (image.complete) {
@@ -107,36 +108,48 @@ class Picture2color extends events {
         this.colorData = new ColorAnalyse(data);
     }
     /**
-     *
+     * 颜色筛选  性能问题 暂时不对外开放
      * @param {Color | [rgba]} color
      */
-    colorFilter(color) {
+    colorFilter_bate(color) {
         let {translateData, colorMap} = this.colorData;
         if (color instanceof Color) {
             // Color
             if (color.isRange) {
                 return translateData.data.filter(item => {
-                    return color.isContact(item.data)
+                    return color.isContact(item.color)
                 })
-
             } else {
-                let dataString = color.data.toString();
+                // let dataString = color.data.toString();
                 return translateData.data.filter(item => {
-                    return item.data.toString() === dataString
+                    return item.color.value === color.value
                 })
             }
         } else if(color.length === 4) {
             // [rgba]
             let dataString = color.toString();
             return translateData.data.filter(item => {
-                return item.data.toString() === dataString
+                return item.data === color || item.data.toString() === dataString
             })
         } else {
             // rgba(0,0,0,1)
             return translateData.data.filter(item => {
-                return Color.data2color(item.data) === color
+                return utils.data2color(item.data) === color
             })
         }
+    }
+    /**
+     * pa
+     * @param {Color || ColorList} colorList
+     */
+    isDeep(colorList, deepStep) {
+        if (colorList instanceof Color) {
+            return deepStep ? utils.isDeep(colorList, deepStep) : colorList.isDeep;
+        }
+        return colorList.reduce((percent, color) => {
+            let isDeep = deepStep ? utils.isDeep(color, deepStep) : color.isDeep;
+            return percent + (isDeep ? color.percent : 0)
+        }, 0) > 50
     }
     /**
      * 销毁实例

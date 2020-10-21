@@ -2,11 +2,12 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:27:03
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-20 17:27:02
+ * @Last Modified time: 2020-10-21 17:42:24
  * @Description: 色值分析
  */
 
 const Color = require("./Color");
+const utils = require("./utils");
 
 
 const defaultOptionColorAnalyse = {
@@ -39,26 +40,19 @@ class ColorAnalyse {
      * @param {*} data
      */
     colorFormat(data, width, height) {
-        return Array.prototype.slice.call(data).reduce((item1, item2, index) => {
-            let result = item1
-            if (index === 1) {
-                result = {
-                    stack: [item1],
-                    list: []
-                }
-            }
-            if (index % 4 === 3) {
-                index = (index - 3) / 4
-                result.list.push({
-                    data: [...result.stack, item2],
-                    position: [index % width, Math.floor(index / width)]
-                })
-                result.stack = []
-            } else {
-                result.stack.push(item2)
-            }
-            return result
-        }).list
+        let list = [],
+        index = 0;
+        data = Array.from(data)
+        while (index * 4 <= data.length - 4) {
+            let _data = data.slice(index * 4, (index + 1) * 4);
+            list.push({
+                color: utils.data2color(_data),
+                data: _data,
+                position: [index % width, Math.floor(index / width)]
+            })
+            index++
+        }
+        return list
     }
     /**
      * 每个色值的占比
@@ -68,7 +62,7 @@ class ColorAnalyse {
         let temp = {}
         let _color = null;
         data.forEach(item => {
-            let color = Color.data2color(item.data);
+            let color = utils.data2color(item.data);
             if (temp[color]) {
                 temp[color].count();
             } else {

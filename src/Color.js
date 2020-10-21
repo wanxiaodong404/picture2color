@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:25:49
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-20 18:03:17
+ * @Last Modified time: 2020-10-21 17:42:14
  * @Description:
  */
 
@@ -12,23 +12,16 @@ const defaultOptionColor = {
 }
 const groupMap = new Map()
 class Color {
-    constructor(data, option = {}, gid) {
+    constructor(data, option = {}, gid = null) {
         this.option = Object.assign({}, defaultOptionColor, option)
         this.data = data;
-        this.value = Color.data2color(data);
-        let group;
+        this.value = utils.data2color(data);
+        let group = null;
         if (gid) {
             group = groupMap.get(gid);
             if (!group) throw Error('未找到group')
-        } else {
-            gid = utils.getUniqueId()
-            group = {
-                gmap: new Set(),
-                count: 1
-            }
-            groupMap.set(gid, group)
+            group.gmap.add(this);
         }
-        group.gmap.add(this);
         this.__gid = gid; // 组id 用于区分颜色集合
         this.__group = group; // 存放组的所有color group instance
 
@@ -43,12 +36,9 @@ class Color {
      */
     contact(...colors) {
         colors.forEach(color => {
-            if (!this.isContact(color)) {
+            if (color.__contacts.length === 0) {
                 this.__contacts.push(color)
-                if (color.__contacts.length <= 0) {
-                    // this.__contacts.push(...color.__contacts)
-                    color.__contacts = this.__contacts
-                }
+                color.__contacts = this.__contacts
             }
         });
     }
@@ -57,16 +47,17 @@ class Color {
      * @param {*} color
      */
     isContact(color) {
-        if (color instanceof Color) {
-            // color instance
-            return color.value === this.value || this.__contacts.some(item => item.value === color.value);
-        } else if (color.length === 4) {
-            // color data
-            let colorStr = Color.data2color(color);
-            return this.value === colorStr || this.__contacts.some(item => item.value === colorStr)
-        } else {
+        if (typeof color === 'string') {
             // rgba(0,0,0,1)
             return this.value === color || this.__contacts.some(item => item.value === color)
+        } else if (color instanceof Color) {
+            // color instance
+            return color.value === this.value || this.__contacts.some(item => item.value === color.value);
+        } else {
+            // color data
+            if (color === this.data) return true
+            let colorStr = utils.data2color(color);
+            return this.value === colorStr || this.__contacts.some(item => item.value === colorStr)
         }
     }
     /**
@@ -74,7 +65,7 @@ class Color {
      * @param {*} num
      */
     count(num = 1) {
-        this.__group.count += num
+        this.__group && (this.__group.count += num)
         this.__count += num
     }
     /**
@@ -83,6 +74,16 @@ class Color {
      * @param {*} option
      */
     groupFactory(data, option) {
+        if (!this.__gid) {
+            this.__gid = utils.getUniqueId()
+            let group = {
+                gmap: new Set(),
+                count: this.__count
+            };
+            groupMap.set(this.__gid, group)
+            group.gmap.add(this);
+            this.__group = group
+        }
         if (data instanceof Color) {
             return new Color(data.data, option || data.option, this.__gid)
         } else {
@@ -98,14 +99,14 @@ class Color {
     /**
      * 包含自己的所有颜色范围
      */
-    get Contacts() {
+    get contacts() {
         return [this, ...this.__contacts]
     }
     /**
      * 百分比
      */
     get percent() {
-        return this.__count / this.__group.count * 100
+        return this.__count / (this.__group ? this.__group.count : this.__count) * 100
     }
     /**
      * 颜色深浅
@@ -120,36 +121,11 @@ class Color {
         return [this.__x, this.__y]
     }
     /**
-     * color数据转rgba
-     * @param {*} data
+     * 转换不同的color string
+     * @param {*} type
      */
-    static data2color(data, type = 0) {
-        const typeMap = {
-            rgba: 0,
-            hex: 1
-        }
-        try {
-            let color;
-            switch (type) {
-                case typeMap.rgba: {
-                    let [r, g, b, a] = data || [];
-                    color = `rgba(${r}, ${g}, ${b}, ${a / 255})`;
-                    break
-                }
-                case typeMap.hex: {
-                    let [r, g, b, a] = data || [];
-                    a = a / 255
-                    r = r * a
-                    g = g * a
-                    b = b * a
-                    color = `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`;
-                    break
-                }
-            }
-            return color;
-        } catch (e) {
-            return ''
-        }
+    toColorString(type = 0) {
+        return utils.data2color(this.data, type)
     }
     static clone(color, deep, gid) {
         let _color = new Color(color.data, color.option, gid)
