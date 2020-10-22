@@ -27,7 +27,7 @@
             document.body.insertAdjacentElement('afterbegin', demo.__el)
             // let map = demo.colorData.getBorderColor({size: 0.2, colorStep: 60})
             let map = demo.colorData.getMainColor()
-            console.log(demo.isDeep(map))
+            console.log(Picture2color.isDeep(map))
             let fr = document.createDocumentFragment()
             console.log(map)
             map.forEach(item => {
@@ -45,25 +45,25 @@
                 fr.appendChild(dom)
             })
             document.body.appendChild(fr);
-            // let canvas = document.createElement('canvas')
-            // document.body.insertAdjacentElement('afterbegin', canvas)
-            // let ctx = canvas.getContext('2d')
-            // let {width, height} = demo.colorData
-            // canvas.width = width
-            // canvas.height = height
-            // function drawColor(color) {
-            //     console.log(color)
-            //     ctx.clearRect(0, 0, width, height)
-            //     ctx.drawImage(demo.__cache.canvas, 0, 0, width, height)
-            //     // console.log(color);
-            //     console.log('get data done')
-            //     color.forEach(item => {
-            //         ctx.strokeStyle = 'red'
-            //         ctx.strokeRect(...item.position, 1, 1)
-            //         ctx.stroke();
-            //     })
-            //     console.log('draw canvas done')
-            // }
+            let canvas = document.createElement('canvas')
+            document.body.insertAdjacentElement('afterbegin', canvas)
+            let ctx = canvas.getContext('2d')
+            let {width, height} = demo.colorData
+            canvas.width = width
+            canvas.height = height
+            function drawColor(color) {
+                console.log(color)
+                ctx.clearRect(0, 0, width, height)
+                ctx.drawImage(demo.__cache.canvas, 0, 0, width, height)
+                // console.log(color);
+                console.log('get data done')
+                color.forEach(item => {
+                    ctx.strokeStyle = 'red'
+                    ctx.strokeRect(...item.position, 1, 1)
+                    ctx.stroke();
+                })
+                console.log('draw canvas done')
+            }
         });
     </script>
 </body>

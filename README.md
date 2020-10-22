@@ -18,6 +18,7 @@
 
 5、对比两个颜色是否在参数程度范围内是否相似
 
+![img][demo-img]
 
 ## install
 ``` bash
@@ -133,6 +134,7 @@
     colorInstance.groupFactory // Function 按组生成实例化颜色对象 （@data: [rgba] @option: {deepStep}）
 ```
 
+[demo-img]: ./assets/color.png
 
 [npm-version-img]: https://img.shields.io/npm/v/picture2color
 [npm-url]: https://www.npmjs.com/package/picture2color
