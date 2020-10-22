@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:36:09
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-21 17:43:25
+ * @Last Modified time: 2020-10-22 16:30:42
  * @Description:
  */
 const events = require('events')
@@ -10,10 +10,12 @@ const ColorAnalyse = require('./Analyse')
 const Color = require('./Color')
 const utils = require('./utils')
 const defaultOption = {
-    event: ['click'] // 绑定事件获取颜色信息 然后通过emit=>color向外反馈
+    event: ['click'], // 绑定事件获取颜色信息 然后通过emit=>color向外反馈
+    colorStep: 100, // 判定相似颜色程度, 值越大色值范围越大
+    deepStep: 120 // 判定深浅色程度，值越大深浅灵敏度越小
 }
 class Picture2color extends events {
-    constructor(image, option, showBlock) {
+    constructor(image, option) {
         super();
         this.originColorData = null
         this.colorData = null;
@@ -105,7 +107,8 @@ class Picture2color extends events {
         ctx.drawImage(image, 0, 0);
         let data = ctx.getImageData(0, 0, width, height);
         this.originColorData = data;
-        this.colorData = new ColorAnalyse(data);
+        let {colorStep, deepStep} = this.option;
+        this.colorData = new ColorAnalyse(data, {colorStep, deepStep});
     }
     /**
      * 颜色筛选  性能问题 暂时不对外开放
@@ -139,10 +142,25 @@ class Picture2color extends events {
         }
     }
     /**
-     * pa
-     * @param {Color || ColorList} colorList
+     * 获取图片占比主要颜色列表
+     * @params{*} {colorStep: 1-255}
      */
-    isDeep(colorList, deepStep) {
+    getMainColor(option) {
+        return this.colorData.getMainColor(option);
+    }
+    /**
+     * 以边框为界限向内获取0-0.5范围主要颜色列表
+     * @param {*} option {size: 0-0.5}
+     */
+    getBorderColor(option) {
+        return this.colorData.getBorderColor(option);
+    }
+    /**
+     * 判断颜色或者颜色列表是否是深色
+     * @param {Color || ColorList} colorList
+     * @param {Number} deepStep
+     */
+    static isDeep(colorList, deepStep) {
         if (colorList instanceof Color) {
             return deepStep ? utils.isDeep(colorList, deepStep) : colorList.isDeep;
         }
@@ -200,22 +218,18 @@ class Picture2color extends events {
         }
     }
     /**
-     * 颜色是否相似
-     * @param {Color} color1
-     * @param {Color} color2
-     * @param {number} step
+     * 颜色是否在对应的范围内色值相似
+     * @param {Color | [r,g,b,a]} color1
+     * @param {Color | [r,g,b,a]} color2
+     * @param {number 1-255} step
      */
-    static isSimilarColor() {
+    static isSimilarColor(color1, color2) {
         return utils.isSimilarColor(...arguments)
     }
     /**
-     *  是否属于深色
-     * @param {Color} color
-     * @param {number} colorStep
+     * 颜色构造函数
      */
-    static isDeep(color, colorStep = 100) {
-        return utils.isDeep(...arguments)
-    }
+    static Color = Color
 }
 
 module.exports = Picture2color

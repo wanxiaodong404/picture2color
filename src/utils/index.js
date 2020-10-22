@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:38:20
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-21 18:11:12
+ * @Last Modified time: 2020-10-22 16:02:29
  * @Description:
  */
 
@@ -15,9 +15,8 @@
      * @param {number} step
      */
     isSimilarColor(color1, color2, step = 10) {
-        let [r1, g1, b1, a1] = color1.data
-        let [r2, g2, b2, a2] = color2.data
-        // console.log(Math.sqrt(Math.pow((r1 - r2), 2) + Math.pow((g1 - g2), 2) + Math.pow((b1 - b2), 2)))
+        let [r1, g1, b1, a1] = color1 instanceof Array ? color1 : color1.data
+        let [r2, g2, b2, a2] = color2 instanceof Array ? color2 : color2.data
         return Math.sqrt(Math.pow((r1 - r2), 2) + Math.pow((g1 - g2), 2) + Math.pow((b1 - b2), 2)) < step
     },
     /**

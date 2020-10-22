@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:27:03
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-21 17:42:24
+ * @Last Modified time: 2020-10-22 16:22:52
  * @Description: 色值分析
  */
 
@@ -61,13 +61,14 @@ class ColorAnalyse {
     colorPercent(data) {
         let temp = {}
         let _color = null;
+        let {deepStep} = this.option
         data.forEach(item => {
             let color = utils.data2color(item.data);
             if (temp[color]) {
                 temp[color].count();
             } else {
                 // _color = new Color(item.data);
-                _color = _color ? _color.groupFactory(item.data) : new Color(item.data);
+                _color = _color ? _color.groupFactory(item.data) : new Color(item.data, {deepStep});
                 temp[color] = _color
             }
         })
@@ -80,8 +81,7 @@ class ColorAnalyse {
      */
     getMainColor(option = {}, data) {
         data = data || this.colorMap
-        let {colorStep} = option;
-        colorStep = colorStep || this.option.colorStep
+        let {colorStep} = Object.assign({}, this.option, option);
         let map = new Set();
         let _color = null;
         data.forEach(item => {
@@ -107,7 +107,7 @@ class ColorAnalyse {
      */
     getBorderColor(option = {}, colorAnalyse) {
         let {width, height, translateData} = colorAnalyse || this;
-        let {size = 0.2, colorStep} = option
+        let {size = 0.2, colorStep} = Object.assign({}, this.option, option)
         let leftX = size * width,
             rightX = (1 - size) * width,
             topY = size * height,
