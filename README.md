@@ -12,7 +12,7 @@
 ## import
 
 ```javascript
-    import Picture2color from Picture2color
+    import Picture2color from 'Picture2color'
 ```
 
 ## static API
