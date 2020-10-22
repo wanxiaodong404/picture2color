@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:36:09
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-22 16:30:42
+ * @Last Modified time: 2020-10-22 16:39:22
  * @Description:
  */
 const events = require('events')
@@ -226,10 +226,8 @@ class Picture2color extends events {
     static isSimilarColor(color1, color2) {
         return utils.isSimilarColor(...arguments)
     }
-    /**
-     * 颜色构造函数
-     */
-    static Color = Color
 }
+
+Picture2color.Color = Color
 
 module.exports = Picture2color
