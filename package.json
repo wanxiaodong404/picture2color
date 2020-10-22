@@ -1,6 +1,6 @@
 {
     "name": "picture2color",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "图片颜色获取, 颜色识别,颜色分析,取色",
     "main": "index.js",
     "scripts": {
