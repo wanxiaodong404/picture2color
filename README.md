@@ -4,6 +4,21 @@
 [![npm download][npm-download-img]][npm-download]
 [![MIT License][license-image]][license-url]
 
+## 简介
+主要是解决前端在图片颜色识别上的问题，有问题可以联系
+[我][e-mail]或者提[issues][issues]
+
+1、能够分析图片的主要颜色
+
+2、按图片边框由外到内0-0.5占比的主要颜色
+
+3、获取图片对应坐标颜色的识别
+
+4、判定单个或者多个颜色深浅判定
+
+5、对比两个颜色是否在参数程度范围内是否相似
+
+
 ## install
 ``` bash
     npm install picture2color
@@ -103,14 +118,14 @@
      * @params {[r,g,b,a]} rgba色值数组
      * @params {*} {deepStep: 0-255} 深色值
      */
-    let colorInstance = new Color(data, option)
+    let colorInstance = new Picture2color.Color(data, option)
 ```
 2、实例化API
 
 ```javascript
     colorInstance.isDeep // Boolean
     colorInstance.percent // Number 如果是按组生成的颜色可查看百分比
-    colorInstance。groupFactory // Function 按组生成实例化颜色对象 （@data: [rgba] @option: {deepStep}）
+    colorInstance.groupFactory // Function 按组生成实例化颜色对象 （@data: [rgba] @option: {deepStep}）
 ```
 
 
@@ -122,3 +137,7 @@
 
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat
 [license-url]: LICENSE
+
+[e-mail]: mailto://729779978@qq.com
+
+[issues]: https://github.com/sheldonWan/picture2color/issues
