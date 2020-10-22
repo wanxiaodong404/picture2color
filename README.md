@@ -89,6 +89,11 @@
         deepStep: 120 // 判定深浅色程度，值越大深浅灵敏度越小 1-255
     }
 ```
+4、点击事件绑定后反馈事件
+```javascript
+    let demo = new Picture2color(image, {event: ['click']});
+    demo.on('color', e => {console.log(e)}) // {type: 'click', color: color}
+```
 
 ## 实例化API
 
