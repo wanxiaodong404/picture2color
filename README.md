@@ -3,6 +3,8 @@
 [![npm version][npm-version-img]][npm-url]
 [![npm download][npm-download-img]][npm-download]
 [![MIT License][license-image]][license-url]
+[![issues-img]][issues]
+[![pr-img]][pr]
 
 ## 简介
 主要是解决前端在图片颜色识别上的问题，有问题可以联系
@@ -147,4 +149,8 @@
 
 [e-mail]: mailto://729779978@qq.com
 
+[issues-img]: https://img.shields.io/bitbucket/issues-raw/sheldonWan/picture2color
 [issues]: https://github.com/sheldonWan/picture2color/issues
+
+[pr-img]: https://img.shields.io/bitbucket/pr-raw/sheldonWan/picture2color
+[pr]: https://github.com/sheldonWan/picture2color/pr
