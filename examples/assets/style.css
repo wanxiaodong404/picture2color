@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-26 11:38:20
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-26 15:10:28
+ * @Last Modified time: 2020-10-26 15:54:38
  * @Description:
  */
 
@@ -47,6 +47,8 @@ img {
     padding: 0 15px;
     border: 1px solid #999;
     border-radius: 3px;
+    -webkit-user-select: auto;
+    cursor: pointer;
 }
 
 .demo-title {
