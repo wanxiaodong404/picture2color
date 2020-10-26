@@ -106,20 +106,47 @@
     <div class="demo-block demo-5">
         <p class="demo-title">颜色范围判定</p>
         <p class="demo-sub-title">判定两个颜色是否在特定参数范围内属于相同颜色范围</p>
-        <div class="show-block" style="margin-top: 15px; line-height: 50px; text-align: center;"></div>
-        <div class="button">切换</div>
+        <div class="show-block-1" style="margin-top: 15px; line-height: 50px; text-align: center;">
+            <input type="number" max="255" placeholder="255以内数字" value="255">
+            <input type="number" max="255" placeholder="255以内数字" value="255">
+            <input type="number" max="255" placeholder="255以内数字" value="255">
+            <input type="number" max="255" placeholder="255以内数字" value="255">
+            <div class="color-block" style="width: 30px;height:30px;border: 1px solid #ccc;"></div>
+        </div>
+        <div class="show-block-2" style="margin-top: 15px; line-height: 50px; text-align: center;">
+            <input type="number" max="255" placeholder="255以内数字" value="255">
+            <input type="number" max="255" placeholder="255以内数字" value="255">
+            <input type="number" max="255" placeholder="255以内数字" value="255">
+            <input type="number" max="255" placeholder="255以内数字" value="255">
+            <div class="color-block" style="width: 30px;height:30px;border: 1px solid #ccc;"></div>
+        </div>
+        <div class="color-step">
+            <label>
+                对比参数：
+                <input type="text" placeholder="0-255数字">
+            </label>
+        </div>
+        <div>
+            对比结果: <span class="result"></span>
+        </div>
+        <div class="button">对比</div>
         <script class="script">
             (function() {
-                let block = document.querySelector('.demo-4')
-                let showBlock = block.querySelector('.show-block')
+                let block = document.querySelector('.demo-5')
+                let showBlock = block.querySelector('.show-block-1')
+                let showBlock2 = block.querySelector('.show-block-2')
+                let colorBlock = showBlock.querySelector('.color-block')
+                let colorBlock2 = showBlock2.querySelector('.color-block')
                 function render() {
-                    let data = [Math.random() * 255, Math.random() * 255, Math.random() * 255, 1 * 255].map(item => parseInt(item))
-                    let color = new Picture2color.Color(data);
-                    showBlock.innerText = color.value;
-                    showBlock.style.color = color.value
-                    showBlock.style.background = color.isDeep ? '#fff' : '#000' // 等同于Picture2color.isDeep(color)
+                    let color1 = Array.prototype.map.call(showBlock.querySelectorAll('input'), (item => Number(item.value) || 0))
+                    let color2 = Array.prototype.map.call(showBlock2.querySelectorAll('input'), (item => Number(item.value) || 0))
+                    color1 = new Picture2color.Color(color1);
+                    color2 = new Picture2color.Color(color2);
+                    colorBlock.style.background = color1.value
+                    colorBlock2.style.background = color2.value
+                    let colorStep = block.querySelector('.color-step').value
+                    block.querySelector('.result').innerText = Picture2color.isSimilarColor(color1, color2, Number(colorStep) || 10)
                 }
-                render()
                 block.querySelector('.button').addEventListener('click', function() {
                     render()
                 })
