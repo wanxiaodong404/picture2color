@@ -19,7 +19,7 @@
         "url": "git+https://github.com/sheldonWan/picture2color.git"
     },
     "author": "wanxiaodong",
-    "license": "ISC",
+    "license": "MIT",
     "bugs": {
         "url": "https://github.com/sheldonWan/picture2color/issues"
     },
