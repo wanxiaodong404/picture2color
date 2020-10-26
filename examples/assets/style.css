@@ -1,0 +1,63 @@
+/*
+ * @Author: wanxiaodong
+ * @Date: 2020-10-26 11:38:20
+ * @Last Modified by: wanxiaodong
+ * @Last Modified time: 2020-10-26 15:10:28
+ * @Description:
+ */
+
+
+* {
+    box-sizing: border-box;
+}
+.container {
+    display: block;
+    width: 100%;
+    padding: 0 15px;
+}
+img {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.demo-block {
+    background-color: #efefef;
+    border-radius: 4px;
+    padding: 15px;
+    margin: 15px 0;
+}
+.demo-block img {
+    max-height: 300px;
+}
+.demo-block pre {
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 10px;
+    overflow-x: auto;
+}
+
+.demo-block .button {
+    width: auto;
+    display: block;
+    margin: 10px auto 0 auto;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+    padding: 0 15px;
+    border: 1px solid #999;
+    border-radius: 3px;
+}
+
+.demo-title {
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 24px;
+}
+.demo-sub-title {
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+}

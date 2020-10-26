@@ -20,6 +20,8 @@
 
 5、对比两个颜色是否在参数程度范围内是否相似
 
+
+## [Demo][demo]
 ![img][demo-img]
 
 ## install
@@ -137,6 +139,7 @@
 ```
 
 [demo-img]: ./assets/color.png
+[demo]: https://sheldonwan.github.io/picture2color/examples/
 
 [npm-version-img]: https://img.shields.io/npm/v/picture2color
 [npm-url]: https://www.npmjs.com/package/picture2color
