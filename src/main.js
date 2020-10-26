@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:36:09
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-26 17:03:16
+ * @Last Modified time: 2020-10-26 17:42:06
  * @Description:
  */
 const events = require('events')
@@ -12,7 +12,7 @@ const utils = require('./utils')
 const defaultOption = {
     event: ['click'], // 绑定事件获取颜色信息 然后通过emit=>color向外反馈
     colorStep: 100, // 判定相似颜色程度, 值越大色值范围越大
-    deepStep: 120 // 判定深浅色程度，值越大深浅灵敏度越小
+    deepStep: 192 // 判定深浅色程度，值越大深浅灵敏度越小
 }
 class Picture2color extends events {
     constructor(image, option) {

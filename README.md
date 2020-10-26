@@ -44,6 +44,7 @@
      /**
      * pa
      * @param {Color || ColorList} colorList
+     * @param {Number} colorStep 值越小说明深色判定范围越小 默认192
      * @return Boolean
      */
     static isDeep(colorList, deepStep)
@@ -66,9 +67,9 @@
      * 颜色是否在对应的范围内色值相似
      * @param {Color | [r,g,b,a]} color1
      * @param {Color | [r,g,b,a]} color2
-     * @param {number 1-255} step
+     * @param {number 1++} colorStep 值越小范围越小,默认100
      */
-    static isSimilarColor(color1, color2)
+    static isSimilarColor(color1, color2, colorStep)
 ```
 4、颜色类（传入[r,g,b,a]）实例化color对象
 ```javascript
@@ -92,8 +93,8 @@
 ```javascript
     {
         event: ['click'], // Array 为传入图片绑定时间类型以color事件传递出当前事件坐标Color
-        colorStep: 100, // 判定相似颜色程度, 值越大色值范围越大 1-255
-        deepStep: 120 // 判定深浅色程度，值越大深浅灵敏度越小 1-255
+        colorStep: 100, // 判定相似颜色程度, 值越大色值范围越大
+        deepStep: 192 // 判定深浅色程度，值越大深浅灵敏度越小 1-255
     }
 ```
 4、点击事件绑定后反馈事件
@@ -109,7 +110,7 @@
 ```javascript
     /**
      * 获取图片占比主要颜色列表
-     * @params{*} {colorStep: 1-255}
+     * @params{*} {colorStep: 1++}
      */
     instance.getMainColor(option)
 ```
@@ -128,7 +129,7 @@
 ```javascript
     /**
      * @params {[r,g,b,a]} rgba色值数组
-     * @params {*} {deepStep: 0-255} 深色值
+     * @params {*} {deepStep: 0-255} 深色值 值越小说明深色判定范围越小
      */
     let colorInstance = new Picture2color.Color(data, option)
 ```

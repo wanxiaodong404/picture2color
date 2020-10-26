@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:38:20
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-22 16:02:29
+ * @Last Modified time: 2020-10-26 17:38:03
  * @Description:
  */
 
@@ -22,11 +22,11 @@
     /**
      *  是否属于深色
      * @param {Color} color
-     * @param {number} colorStep
+     * @param {number} deepStep 0-255
      */
-    isDeep(color, colorStep = 100) {
+    isDeep(color, deepStep = 192) {
         let [r, g, b, a] = color.data
-        return r * 0.299 + g * 0.587 + b * 0.114 < colorStep
+        return r * 0.299 + g * 0.587 + b * 0.114 < deepStep
     },
     /**
      * 生成唯一id
