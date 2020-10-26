@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:25:49
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-21 17:42:14
+ * @Last Modified time: 2020-10-26 10:45:51
  * @Description:
  */
 
@@ -117,9 +117,9 @@ class Color {
     /**
      * 坐标
      */
-    get position() {
-        return [this.__x, this.__y]
-    }
+    // get position() {
+    //     return [this.__x, this.__y]
+    // }
     /**
      * 转换不同的color string
      * @param {*} type
@@ -127,6 +127,12 @@ class Color {
     toColorString(type = 0) {
         return utils.data2color(this.data, type)
     }
+    /**
+     * 克隆color对象
+     * @param {*} color
+     * @param {*} deep
+     * @param {*} gid
+     */
     static clone(color, deep, gid) {
         let _color = new Color(color.data, color.option, gid)
         if (deep) {
