@@ -20,9 +20,11 @@
 
 5、对比两个颜色是否在参数程度范围内是否相似
 
-
-## [Demo][demo]
 ![img][demo-img]
+
+## Demo
+
+[链接][demo]
 
 ## install
 ``` bash
