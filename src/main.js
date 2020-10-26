@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:36:09
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-26 17:42:06
+ * @Last Modified time: 2020-10-26 18:06:12
  * @Description:
  */
 const events = require('events')
@@ -64,8 +64,7 @@ class Picture2color extends events {
         let {width, height} = this.originColorData;
         let event = eventType.map((type) => {
             let callback = function(event) {
-                console.log(event)
-                var {x, y, screenX, screenY, offsetX, offsetY} = event;
+                var {offsetX, offsetY} = event;
                 let color = that.getImageColor(offsetX, offsetY, that.__el, true)
                 that.emit('color', {
                     type,
