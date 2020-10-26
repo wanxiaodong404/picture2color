@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:36:09
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-22 16:39:22
+ * @Last Modified time: 2020-10-26 17:03:16
  * @Description:
  */
 const events = require('events')
@@ -64,14 +64,12 @@ class Picture2color extends events {
         let {width, height} = this.originColorData;
         let event = eventType.map((type) => {
             let callback = function(event) {
-                let _width = that.__el.offsetWidth;
-                let _height = that.__el.offsetHeight;
-                let x = Number.parseInt((event.x - that.__el.offsetLeft) / _width * width);
-                let y = Number.parseInt((event.y - that.__el.offsetTop) / _height * height);
-                let color = that.getImageColor(x, y, that.__el)
+                console.log(event)
+                var {x, y, screenX, screenY, offsetX, offsetY} = event;
+                let color = that.getImageColor(offsetX, offsetY, that.__el, true)
                 that.emit('color', {
                     type,
-                    eventPosition: [event.x, event.y],
+                    eventPosition: [offsetX, offsetY],
                     color: color
                 })
             };
@@ -197,13 +195,13 @@ class Picture2color extends events {
     static getImageColor(x = 0, y = 0, image, isPiex = true) {
         try {
             let instance = this instanceof Picture2color ? this : null; // 实例化
-            let {width, height} = instance ? (this.__el || image) : image;
+            let {width, height, naturalHeight, naturalWidth} = instance ? (this.__el || image) : image;
             let canvas = instance ? (this.__cache.canvas || document.createElement('canvas')) : document.createElement('canvas');
             instance && (this.__cache.canvas = canvas);
             canvas.width = width
             canvas.height = height
             let ctx = canvas.getContext('2d')
-            ctx.drawImage(image, 0, 0, width, height, 0, 0, width, height);
+            ctx.drawImage(image, 0, 0, naturalWidth, naturalHeight, 0, 0, width, height);
             if (!isPiex) {
                 // 百分比模式
                 x = Math.round(x * width * 0.01);
