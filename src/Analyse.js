@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:27:03
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-22 16:22:52
+ * @Last Modified time: 2020-10-28 09:49:28
  * @Description: 色值分析
  */
 
@@ -45,10 +45,11 @@ class ColorAnalyse {
         data = Array.from(data)
         while (index * 4 <= data.length - 4) {
             let _data = data.slice(index * 4, (index + 1) * 4);
+            let position = [index % width, Math.floor(index / width)]
             list.push({
                 color: utils.data2color(_data),
                 data: _data,
-                position: [index % width, Math.floor(index / width)]
+                position
             })
             index++
         }
@@ -68,7 +69,7 @@ class ColorAnalyse {
                 temp[color].count();
             } else {
                 // _color = new Color(item.data);
-                _color = _color ? _color.groupFactory(item.data) : new Color(item.data, {deepStep});
+                _color = _color ? _color.groupFactory(item.data, {value: item.color}) : new Color(item.data, {deepStep, value: item.color});
                 temp[color] = _color
             }
         })

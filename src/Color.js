@@ -2,20 +2,21 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:25:49
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-26 10:45:51
+ * @Last Modified time: 2020-10-28 09:47:39
  * @Description:
  */
 
 const utils = require('./utils')
 const defaultOptionColor = {
-    deepStep: 120
+    deepStep: 120,
+    value: undefined // 优化字符串处理速度可传入提前处理好的value utils.data2color(data)
 }
 const groupMap = new Map()
 class Color {
     constructor(data, option = {}, gid = null) {
         this.option = Object.assign({}, defaultOptionColor, option)
         this.data = data;
-        this.value = utils.data2color(data);
+        this.value = option.value || utils.data2color(data); // 优化字符串处理速度
         let group = null;
         if (gid) {
             group = groupMap.get(gid);
@@ -28,7 +29,7 @@ class Color {
         this.__count = 1;
         this.__total = 1;
 
-        this.__contacts = []; // 包含
+        this.__contacts = []; // 包含颜色范围集合
     }
     /**
      * 将其他color instance 包含进来
@@ -115,12 +116,6 @@ class Color {
         return utils.isDeep(this, this.option.deepStep)
     }
     /**
-     * 坐标
-     */
-    // get position() {
-    //     return [this.__x, this.__y]
-    // }
-    /**
      * 转换不同的color string
      * @param {*} type
      */
@@ -130,15 +125,11 @@ class Color {
     /**
      * 克隆color对象
      * @param {*} color
-     * @param {*} deep
+     * @param {*} option
      * @param {*} gid
      */
-    static clone(color, deep, gid) {
-        let _color = new Color(color.data, color.option, gid)
-        if (deep) {
-            _color.setPosition(...color.position)
-            _color.count(color.__count - 1)
-        }
+    static clone(color, option, gid) {
+        let _color = new Color(color.data, {...color.option, value: color.value, ...option}, gid)
         return _color
     }
 }
