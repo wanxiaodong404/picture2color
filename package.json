@@ -1,12 +1,14 @@
 {
     "name": "picture2color",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "图片颜色获取, 颜色识别,颜色分析,取色",
     "keywords": [
         "颜色",
         "颜色识别",
         "颜色提取",
-        "图片颜色"
+        "图片颜色",
+        "color picker",
+        "picture2color"
     ],
     "main": "index.js",
     "scripts": {
@@ -27,6 +29,7 @@
     "dependencies": {
         "events": "^3.2.0"
     },
+    "publishConfig": { "registry": "https://npm.pkg.github.com/" },
     "devDependencies": {
         "@babel/core": "^7.11.6",
         "@babel/plugin-proposal-class-properties": "^7.10.4",
