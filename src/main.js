@@ -2,13 +2,13 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:36:09
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-11-26 17:55:43
+ * @Last Modified time: 2020-11-26 18:24:47
  * @Description:
  */
 const events = require('events')
-const ColorAnalyse = require('./Analyse')
-const Color = require('./Color')
-const ColorGroup = require('./ColorGroup')
+const ColorAnalyse = require('./lib/Analyse')
+const Color = require('./lib/Color')
+const ColorGroup = require('./lib/ColorGroup')
 const utils = require('./utils')
 const defaultOption = {
     event: ['click'], // 绑定事件获取颜色信息 然后通过emit=>color向外反馈
@@ -106,14 +106,14 @@ class Picture2color extends events {
         let data = ctx.getImageData(0, 0, width, height);
         this.originColorData = data;
         let {colorStep, deepStep} = this.option;
-        this.colorData = new ColorAnalyse(data, {colorStep, deepStep});
+        this.analyData = new ColorAnalyse(data, {colorStep, deepStep});
     }
     /**
      * 颜色筛选  性能问题 暂时不对外开放
      * @param {Color | [rgba]} color
      */
     colorFilter_bate(color) {
-        let {translateData, colorMap} = this.colorData;
+        let {translateData, colorMap} = this.analyData;
         if (color instanceof Color) {
             // Color
             if (color.isRange) {
@@ -123,7 +123,7 @@ class Picture2color extends events {
             } else {
                 // let dataString = color.data.toString();
                 return translateData.data.filter(item => {
-                    return item.color.value === color.value
+                    return item.color.name === color.name
                 })
             }
         } else if(color.length === 4) {
@@ -144,14 +144,14 @@ class Picture2color extends events {
      * @params{*} {colorStep: 1-255}
      */
     getMainColor(option) {
-        return this.colorData.getMainColor(option);
+        return this.analyData.getMainColor(option);
     }
     /**
      * 以边框为界限向内获取0-0.5范围主要颜色列表
      * @param {*} option {size: 0-0.5}
      */
     getBorderColor(option) {
-        return this.colorData.getBorderColor(option);
+        return this.analyData.getBorderColor(option);
     }
     /**
      * 判断颜色或者颜色列表是否是深色
@@ -182,7 +182,7 @@ class Picture2color extends events {
         instance.option = null;
         instance.__el = null;
         instance.off('.inner');
-        instance.colorData && instance.colorData.destory();
+        instance.analyData && instance.colorData.destory();
         instance.colorData = null;
     }
     /**

@@ -136,6 +136,7 @@
 2、实例化API
 
 ```javascript
+    colorInstance.value // rgba 色值
     colorInstance.isDeep // Boolean
     colorInstance.count // Number
     colorInstance.percent // Number 如果是按组生成的颜色可查看百分比
@@ -145,7 +146,7 @@
 1、实例化
 ```javascript
     /**
-     * @params {color} 参数传入color时会将color设置为group的proxy 能获取到proxy和name两个属性，为空时则纯作为颜色组
+     * @params {color} 参数传入color时会将color设置为group的proxy 能获取到proxy和value两个属性，为空时则纯作为颜色组
      */
     let colorInstance = new Picture2color.ColorGroup()
 ```

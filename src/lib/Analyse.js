@@ -8,7 +8,7 @@
 
 const Color = require("./Color");
 const ColorGroup = require("./ColorGroup");
-const utils = require("./utils");
+const utils = require("../utils");
 
 
 const defaultOptionColorAnalyse = {

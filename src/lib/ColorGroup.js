@@ -2,12 +2,12 @@
  * @Author: wanxiaodong
  * @Date: 2020-11-26 14:50:42
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-11-26 17:41:47
+ * @Last Modified time: 2020-11-26 18:11:26
  * @Description:
  */
 const Color = require('./Color');
 const Count = require('./Count');
-const utils = require('./utils/index')
+const utils = require('../utils/index')
 class ColorGroup extends Count {
     constructor(child) {
         super();
@@ -24,13 +24,13 @@ class ColorGroup extends Count {
      */
     pushPool(color) {
         if (color instanceof Color) {
-            this.__pool.set(color.name, color);
+            this.__pool.set(color.value, color);
             this.append(color)
         } else if (color instanceof ColorGroup){
-            this.__pool.set(color.proxy.name, color);
+            this.__pool.set(color.proxy.value, color);
             this.append(color)
         } else {
-            this.__groupPool.set(color.proxy.name, color);
+            this.__groupPool.set(color.proxy.value, color);
             this.append(color)
         }
     }
@@ -42,7 +42,7 @@ class ColorGroup extends Count {
     concat(color, option) {
         let pool = this.__pool
         if (color instanceof Color) {
-            let data = pool.get(color.name)
+            let data = pool.get(color.value)
             if (data) {
                 // 如果传入的是color 则 option可传入的为count
                 data.plus(color.count)
@@ -51,7 +51,7 @@ class ColorGroup extends Count {
                 this.pushPool(color)
             }
         } else if (color instanceof ColorGroup) {
-            let data = pool.get(color.proxy.name)
+            let data = pool.get(color.proxy.value)
             if (data) {
                 data.plus(color.count)
                 this.plus(color.count)
@@ -92,8 +92,8 @@ class ColorGroup extends Count {
         }
     }
 
-    get name() {
-        return  this.proxy && this.proxy.name
+    get value() {
+        return  this.proxy && this.proxy.value
     }
 
     get list() {

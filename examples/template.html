@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>picture2color demo</title>
+    <title>Picture2color demo</title>
     <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
@@ -20,9 +20,8 @@
                 pms.then(demo => {
                     console.log(window.demo = demo)
                     demo.on('color', function(e) {
-                        showBlock.style.background = e.color.name
-                        console.log(`%c event: ${e.type} color: ${e.color.name}`, `background: ${e.color.isDeep ? '#ccc' : '#000'};color:${e.color.toColorString(1)}`)
-
+                        showBlock.style.background = e.color.value
+                        console.log(`%c event: ${e.type} color: ${e.color.value}`, `background: ${e.color.isDeep ? '#ccc' : '#000'};color:${e.color.toColorString(1)}`)
                     })
                     showBlock.insertAdjacentElement('beforebegin', demo.__el)
                 });
@@ -44,12 +43,13 @@
                     subTitle.insertAdjacentElement('afterend', demo.__el)
                     let map = demo.colorData.getMainColor()
                     let fr = document.createDocumentFragment()
+                    console.log(map)
                     map.sortList.forEach(item => {
                         let dom = document.createElement('div')
                         dom.height = 10
-                        dom.style.background = item.name
+                        dom.style.background = item.value
                         if (item.isDeep) (dom.style.color = '#fff')
-                        dom.innerText = `${item.name} ---- ${item.percent}%`;
+                        dom.innerText = `${item.value} ---- ${item.percent}%`;
                         fr.appendChild(dom)
                     })
                     showBlock.appendChild(fr);
@@ -72,7 +72,7 @@
                     showBlock.appendChild(demo.__el)
                     let map = demo.colorData.getBorderColor({size: 0.1})
                     let fr = document.createDocumentFragment()
-                    showBlock.style.background = map.sortList[0].name;
+                    showBlock.style.background = map.sortList[0].value;
                     demo.__el.style.border = '1px solid #ccc'
                 });
             })()
@@ -91,8 +91,8 @@
                 function render() {
                     let data = [Math.random() * 255, Math.random() * 255, Math.random() * 255, 1 * 255].map(item => parseInt(item))
                     let color = new Picture2color.Color(data);
-                    showBlock.innerText = color.name;
-                    showBlock.style.color = color.name
+                    showBlock.innerText = color.value;
+                    showBlock.style.color = color.value
                     showBlock.style.background = color.isDeep ? '#fff' : '#000' // 等同于Picture2color.isDeep(color)
                 }
                 render()
@@ -142,9 +142,9 @@
                     let color2 = Array.prototype.map.call(showBlock2.querySelectorAll('input'), (item => Number(item.value) || 0))
                     color1 = new Picture2color.Color(color1);
                     color2 = new Picture2color.Color(color2);
-                    colorBlock.style.background = color1.name
-                    colorBlock2.style.background = color2.name
-                    let colorStep = block.querySelector('.color-step').name
+                    colorBlock.style.background = color1.value
+                    colorBlock2.style.background = color2.value
+                    let colorStep = block.querySelector('.color-step').value
                     block.querySelector('.result').innerText = Picture2color.isSimilarColor(color1, color2, Number(colorStep) || 10)
                 }
                 block.querySelector('.button').addEventListener('click', function() {

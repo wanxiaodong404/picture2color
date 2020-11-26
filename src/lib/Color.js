@@ -2,15 +2,15 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:25:49
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-11-26 17:01:43
+ * @Last Modified time: 2020-11-26 18:07:28
  * @Description:
  */
 
 const Count = require('./Count');
-const utils = require('./utils')
+const utils = require('../utils')
 const defaultOptionColor = {
     deepStep: 120,
-    name: undefined // 优化字符串处理速度可传入提前处理好的name utils.data2color(data)
+    value: undefined // 优化字符串处理速度可传入提前处理好的name utils.data2color(data)
 }
 const groupMap = new Map()
 class Color extends Count {
@@ -30,7 +30,7 @@ class Color extends Count {
     /**
      * 获取颜色rgba名称，有缓存以及懒加载作用
      */
-    get name() {
+    get value() {
         return this.__colorName || (this.__colorName = this.toColorString())
     }
     /**
@@ -47,7 +47,7 @@ class Color extends Count {
      * @param {*} gid
      */
     static clone(color, option, group) {
-        let _color = new Color(color.data, {...color.option, name: color.name, ...option}, group)
+        let _color = new Color(color.data, {...color.option, value: color.value, ...option}, group)
         return _color
     }
 }
