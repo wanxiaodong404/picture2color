@@ -2,12 +2,13 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:36:09
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-26 18:06:12
+ * @Last Modified time: 2020-11-26 17:55:43
  * @Description:
  */
 const events = require('events')
 const ColorAnalyse = require('./Analyse')
 const Color = require('./Color')
+const ColorGroup = require('./ColorGroup')
 const utils = require('./utils')
 const defaultOption = {
     event: ['click'], // 绑定事件获取颜色信息 然后通过emit=>color向外反馈
@@ -226,5 +227,6 @@ class Picture2color extends events {
 }
 
 Picture2color.Color = Color
+Picture2color.ColorGroup = ColorGroup
 
 module.exports = Picture2color

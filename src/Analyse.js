@@ -2,11 +2,12 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:27:03
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-28 09:49:28
+ * @Last Modified time: 2020-11-26 17:32:56
  * @Description: 色值分析
  */
 
 const Color = require("./Color");
+const ColorGroup = require("./ColorGroup");
 const utils = require("./utils");
 
 
@@ -33,7 +34,7 @@ class ColorAnalyse {
         data = this.colorFormat(_data, width, height);
         return {
             translateData: {width, height, data},
-            colorMap: this.colorPercent(data)
+            colorMap: this.createColorGroup(data)
         }
     }/**
      *  格式化颜色数据
@@ -47,7 +48,7 @@ class ColorAnalyse {
             let _data = data.slice(index * 4, (index + 1) * 4);
             let position = [index % width, Math.floor(index / width)]
             list.push({
-                color: utils.data2color(_data),
+                colorName: utils.data2color(_data),
                 data: _data,
                 position
             })
@@ -56,24 +57,16 @@ class ColorAnalyse {
         return list
     }
     /**
-     * 每个色值的占比
+     * 创建一个颜色组
      * @param {*} data
      */
-    colorPercent(data) {
-        let temp = {}
-        let _color = null;
+    createColorGroup(data) {
         let {deepStep} = this.option
+        let group = new ColorGroup();
         data.forEach(item => {
-            let color = utils.data2color(item.data);
-            if (temp[color]) {
-                temp[color].count();
-            } else {
-                // _color = new Color(item.data);
-                _color = _color ? _color.groupFactory(item.data, {value: item.color}) : new Color(item.data, {deepStep, value: item.color});
-                temp[color] = _color
-            }
+            group.concat(item.data, {deepStep})
         })
-        return Object.values(temp).sort((color, color2) => color2.__count - color.__count)
+        return group
     }
     /**
      * 获取图片主要色值
@@ -84,22 +77,23 @@ class ColorAnalyse {
         data = data || this.colorMap
         let {colorStep} = Object.assign({}, this.option, option);
         let map = new Set();
-        let _color = null;
-        data.forEach(item => {
+        data.sortList.forEach(item => {
             let hasNoColor = true;
             map.forEach((value, key) => {
-                if (Picture2color.isSimilarColor(value, item, colorStep)) {
+                if (Picture2color.isSimilarColor(value.proxy, item, colorStep)) {
                     hasNoColor = false
-                    value.count()
-                    value.contact(item)
+                    value.concat(item)
                 }
             })
             if (hasNoColor) {
-                _color = _color ? _color.groupFactory(item) : Color.clone(item)
-                map.add(_color)
+                map.add(new ColorGroup(item))
             }
         })
-        return Array.from(map).sort((color, color2) => color2.__count - color.__count)
+        let _group = new ColorGroup();
+        map.forEach(function(group) {
+            _group.concat(group)
+        })
+        return _group
     }
     /**
      * 以边框向内方向获取范围主要色值
@@ -116,7 +110,7 @@ class ColorAnalyse {
         let _data = translateData.data.filter(item => {
             return (item.position[0] <= leftX || item.position[0] >= rightX) && (item.position[1] >= bottomY || item.position[1] <=topY)
         });
-        _data = this.colorPercent(_data)
+        _data = this.createColorGroup(_data)
         return this.getMainColor({colorStep}, _data)
     }
     /**

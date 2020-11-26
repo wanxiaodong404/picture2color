@@ -112,7 +112,7 @@
      * 获取图片占比主要颜色列表
      * @params{*} {colorStep: 1++}
      */
-    instance.getMainColor(option)
+    instance.getMainColor(option) // 返回ColorGroup实例
 ```
 2、以边框为界限向内获取主要颜色列表（数据量大的时候计算时间会比较长）
 ```javascript
@@ -120,7 +120,7 @@
      * 以边框为界限向内获取0-0.5范围主要颜色列表
      * @param {*} option {size: 0-0.5}
      */
-    instance.getBorderColor(option)
+    instance.getBorderColor(option) // 返回ColorGroup实例
 ```
 
 ## Color
@@ -137,8 +137,39 @@
 
 ```javascript
     colorInstance.isDeep // Boolean
+    colorInstance.count // Number
     colorInstance.percent // Number 如果是按组生成的颜色可查看百分比
-    colorInstance.groupFactory // Function 按组生成实例化颜色对象 （@data: [rgba] @option: {deepStep}）
+```
+## ColorGroup
+
+1、实例化
+```javascript
+    /**
+     * @params {color} 参数传入color时会将color设置为group的proxy 能获取到proxy和name两个属性，为空时则纯作为颜色组
+     */
+    let colorInstance = new Picture2color.ColorGroup()
+```
+2、实例化API
+
+```javascript
+    colorInstance.list // Array 颜色组包含的所有颜色列表
+    colorInstance.sortList // Array 颜色组包含的所有颜色列表-降序排列
+    colorInstance.count // Number
+    colorInstance.percent // Number 如果是按组生成的颜色可查看百分比
+```
+## Count(Color和ColorGroup 都继承的类)
+
+1、实例化
+```javascript
+    /**
+     */
+    let countInstance = new Count()
+```
+2、实例化API
+
+```javascript
+    countInstance.count // number 数量
+    countInstance.percent // Number 百分比
 ```
 
 [demo-img]: ./assets/color.png
