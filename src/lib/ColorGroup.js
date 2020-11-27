@@ -2,19 +2,31 @@
  * @Author: wanxiaodong
  * @Date: 2020-11-26 14:50:42
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-11-26 18:11:26
+ * @Last Modified time: 2020-11-27 14:18:04
  * @Description:
  */
 const Color = require('./Color');
 const Count = require('./Count');
-const utils = require('../utils/index')
+const utils = require('../utils')
 class ColorGroup extends Count {
     constructor(child) {
         super();
-        this.__proxy = child || null; // 如果是颜色范围的话，可设置一个颜色代表用以代表这个颜色范围
         this.gid = utils.getUniqueId();
+        this.isGroup = true; // 用于判定color和group
+        this.__proxy = child || null; // 如果是颜色范围的话，可设置一个颜色代表用以代表这个颜色范围
         this.__pool = new Map();
         if (child) {
+            // 代理一些Color类上的方法和属性，注意方法是否需要bind
+            let proxyList = new Set(['value', 'data', 'isDeep', 'toColorString'])
+            return new Proxy(this, {
+                get(target, key) {
+                    if (proxyList.has(key)) {
+                        return child[key]
+                    } else {
+                        return target[key]
+                    }
+                }
+            })
             this.concat(child)
         }
     }
@@ -80,6 +92,17 @@ class ColorGroup extends Count {
      */
     hasChild(colorName) {
         return this.__pool.has(colorName)
+    }
+
+    get(color) {
+        if (color instanceof Color) {
+            return this.__pool.get(color.value)
+        } else if (Array.isArray(color)) {
+            // rgba
+            return this.__pool.get(utils.data2color(color))
+        } else {
+            return this.__pool.get(color)
+        }
     }
 
     get proxy() {

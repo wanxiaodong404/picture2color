@@ -2,8 +2,9 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:25:49
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-11-26 18:07:28
+ * @Last Modified time: 2020-11-27 10:45:31
  * @Description:
+ * @Focus: 注意：如果是需要新增属性和方法，请确认是否需要在ColorGroup的代理中进行设置
  */
 
 const Count = require('./Count');
@@ -14,11 +15,10 @@ const defaultOptionColor = {
 }
 const groupMap = new Map()
 class Color extends Count {
-    constructor(data, option = {}, group = null) {
+    constructor(data, option = {}) {
         super()
         this.option = Object.assign({}, defaultOptionColor, option)
         this.data = data;
-        this.__group = group
         this.__colorName = option.value || null; // 颜色名
     }
     /**
@@ -46,8 +46,8 @@ class Color extends Count {
      * @param {*} option
      * @param {*} gid
      */
-    static clone(color, option, group) {
-        let _color = new Color(color.data, {...color.option, value: color.value, ...option}, group)
+    static clone(color, option) {
+        let _color = new Color(color.data, {...color.option, value: color.value, ...option})
         return _color
     }
 }

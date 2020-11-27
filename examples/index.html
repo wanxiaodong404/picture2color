@@ -44,7 +44,7 @@
                 let showBlock = block.querySelector('.show-block')
                 pms.then(demo => {
                     subTitle.insertAdjacentElement('afterend', demo.__el)
-                    let map = demo.colorData.getMainColor()
+                    let map = demo.analyData.getMainColor()
                     let fr = document.createDocumentFragment()
                     console.log(map)
                     map.sortList.forEach(item => {
@@ -73,7 +73,7 @@
                 let showBlock = block.querySelector('.show-block')
                 pms.then(demo => {
                     showBlock.appendChild(demo.__el)
-                    let map = demo.colorData.getBorderColor({size: 0.1})
+                    let map = demo.analyData.getBorderColor({size: 0.1})
                     let fr = document.createDocumentFragment()
                     showBlock.style.background = map.sortList[0].value;
                     demo.__el.style.border = '1px solid #ccc'

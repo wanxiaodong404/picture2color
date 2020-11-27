@@ -173,6 +173,12 @@
     countInstance.percent // Number 百分比
 ```
 
+## 未来可期
+
+1. 同颜色坐标查找
+2. 颜色范围坐标查找
+3. serviceWorker解决性能问题
+
 [demo-img]: ./assets/color.png
 [demo]: https://sheldonwan.github.io/picture2color/examples/
 

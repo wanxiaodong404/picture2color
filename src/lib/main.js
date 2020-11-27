@@ -2,14 +2,14 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:36:09
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-11-26 18:24:47
+ * @Last Modified time: 2020-11-27 13:54:34
  * @Description:
  */
 const events = require('events')
-const ColorAnalyse = require('./lib/Analyse')
-const Color = require('./lib/Color')
-const ColorGroup = require('./lib/ColorGroup')
-const utils = require('./utils')
+const ColorAnalyse = require('./Analyse')
+const Color = require('./Color')
+const ColorGroup = require('./ColorGroup')
+const utils = require('../utils')
 const defaultOption = {
     event: ['click'], // 绑定事件获取颜色信息 然后通过emit=>color向外反馈
     colorStep: 100, // 判定相似颜色程度, 值越大色值范围越大
@@ -62,11 +62,10 @@ class Picture2color extends events {
      */
     bindEvent(eventType = []) {
         let that = this;
-        let {width, height} = this.originColorData;
         let event = eventType.map((type) => {
             let callback = function(event) {
                 var {offsetX, offsetY} = event;
-                let color = that.getImageColor(offsetX, offsetY, that.__el, true)
+                let color = that.getImageColor(offsetX, offsetY, that.__el)
                 that.emit('color', {
                     type,
                     eventPosition: [offsetX, offsetY],
@@ -101,6 +100,7 @@ class Picture2color extends events {
         let {width, height} = image;
         canvas.width = width
         canvas.height = height
+        this.__canvas = canvas
         let ctx = canvas.getContext('2d')
         ctx.drawImage(image, 0, 0);
         let data = ctx.getImageData(0, 0, width, height);
@@ -113,31 +113,7 @@ class Picture2color extends events {
      * @param {Color | [rgba]} color
      */
     colorFilter_bate(color) {
-        let {translateData, colorMap} = this.analyData;
-        if (color instanceof Color) {
-            // Color
-            if (color.isRange) {
-                return translateData.data.filter(item => {
-                    return color.isContact(item.color)
-                })
-            } else {
-                // let dataString = color.data.toString();
-                return translateData.data.filter(item => {
-                    return item.color.name === color.name
-                })
-            }
-        } else if(color.length === 4) {
-            // [rgba]
-            let dataString = color.toString();
-            return translateData.data.filter(item => {
-                return item.data === color || item.data.toString() === dataString
-            })
-        } else {
-            // rgba(0,0,0,1)
-            return translateData.data.filter(item => {
-                return utils.data2color(item.data) === color
-            })
-        }
+        return this.analyData.colorFilter_bate(color)
     }
     /**
      * 获取图片占比主要颜色列表
@@ -194,22 +170,33 @@ class Picture2color extends events {
      */
     static getImageColor(x = 0, y = 0, image, isPiex = true) {
         try {
-            let instance = this instanceof Picture2color ? this : null; // 实例化
-            let {width, height, naturalHeight, naturalWidth} = instance ? (this.__el || image) : image;
-            let canvas = instance ? (this.__cache.canvas || document.createElement('canvas')) : document.createElement('canvas');
-            instance && (this.__cache.canvas = canvas);
-            canvas.width = width
-            canvas.height = height
-            let ctx = canvas.getContext('2d')
-            ctx.drawImage(image, 0, 0, naturalWidth, naturalHeight, 0, 0, width, height);
-            if (!isPiex) {
-                // 百分比模式
-                x = Math.round(x * width * 0.01);
-                y = Math.round(y * height * 0.01);
+            if (this instanceof Picture2color) {
+                let {width, height, naturalHeight, naturalWidth} = image;
+                if (!isPiex) {
+                    // 百分比模式
+                    x = Math.round(x * width * 0.01);
+                    y = Math.round(y * height * 0.01);
+                } else {
+                    x = Math.round(x / width * naturalWidth);
+                    y = Math.round(y / height * naturalHeight);
+                }
+                return this.analyData.getPositionColor(x, y)
+            } else {
+                let {width, height, naturalHeight, naturalWidth} = image;
+                let canvas = document.createElement('canvas');
+                canvas.width = width
+                canvas.height = height
+                let ctx = canvas.getContext('2d')
+                ctx.drawImage(image, 0, 0, naturalWidth, naturalHeight, 0, 0, width, height);
+                if (!isPiex) {
+                    // 百分比模式
+                    x = Math.round(x * width * 0.01);
+                    y = Math.round(y * height * 0.01);
+                }
+                let data = ctx.getImageData(x, y, 1, 1);
+                let color = new Color(data.data)
+                return color
             }
-            let data = ctx.getImageData(x, y, 1, 1);
-            let color = new Color(data.data)
-            return color
         } catch (e) {
             console.warn('获取数据失败')
             return {}

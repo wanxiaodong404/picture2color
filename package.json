@@ -20,6 +20,11 @@
         "type": "git",
         "url": "git+https://github.com/sheldonWan/picture2color.git"
     },
+    "config": {
+        "commitzen": {
+            "path": "cz-conveentional-changelog"
+        }
+    },
     "author": "wanxiaodong",
     "license": "MIT",
     "bugs": {
@@ -37,6 +42,7 @@
         "@babel/preset-env": "^7.11.5",
         "babel-loader": "^8.1.0",
         "babel-runtime": "^6.26.0",
+        "cz-conventional-changelog": "^3.3.0",
         "html-webpack-plugin": "^4.4.1",
         "webpack": "^4.43.0",
         "webpack-cli": "^3.3.12",

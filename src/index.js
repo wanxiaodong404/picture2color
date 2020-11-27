@@ -6,7 +6,7 @@
  * @Description:
  */
 
-const Picture2color = require('./main')
+const Picture2color = require('./lib/main')
 
 
 module.exports = Picture2color

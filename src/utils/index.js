@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:38:20
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-26 17:38:03
+ * @Last Modified time: 2020-11-27 12:04:41
  * @Description:
  */
 
@@ -94,5 +94,8 @@
         } catch (e) {
             console.warn('请传入正确的色值')
         }
+    },
+    index2position(index, width = 1) {
+        return [index % width, Math.ceil(index / width)]
     }
  }

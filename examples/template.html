@@ -5,6 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Picture2color demo</title>
     <link rel="stylesheet" href="./assets/style.css">
+    <script>
+        function drawCanvas(demo, list, canvas) {
+            canvas = canvas || document.createElement('canvas');
+            let ctx = canvas.getContext('2d')
+            let {width, height} = demo.__canvas
+            canvas.width = width
+            canvas.height = height
+            ctx.clearRect(0, 0, width, height)
+            ctx.drawImage(demo.__canvas, 0, 0, width, height, 0, 0, width, height)
+            ctx.strokeStyle = 'red'
+            list.forEach(item => {
+                ctx.strokeRect(...item.position, 1, 1)
+            })
+            return canvas
+        }
+    </script>
 </head>
 <body>
 <div class="container">
@@ -22,6 +38,7 @@
                     demo.on('color', function(e) {
                         showBlock.style.background = e.color.value
                         console.log(`%c event: ${e.type} color: ${e.color.value}`, `background: ${e.color.isDeep ? '#ccc' : '#000'};color:${e.color.toColorString(1)}`)
+                        console.log(e.color)
                     })
                     showBlock.insertAdjacentElement('beforebegin', demo.__el)
                 });
@@ -32,16 +49,20 @@
     <div class="demo-block demo-2">
         <p class="demo-title">主颜色分析</p>
         <p class="demo-sub-title"> 分析整张图片主要颜色占比</p>
+        <div class="canvas-block" style="margin-top: 15px;">
+            <canvas></canvas>
+        </div>
         <div class="show-block" style="margin-top: 15px;"></div>
         <script class="script">
             (function() {
                 let block = document.querySelector('.demo-2')
                 let subTitle = block.querySelector('.demo-sub-title')
                 let pms = new Picture2color('./assets/pic9.jpeg')
+                let canvasBlock = block.querySelector('.canvas-block')
                 let showBlock = block.querySelector('.show-block')
                 pms.then(demo => {
                     subTitle.insertAdjacentElement('afterend', demo.__el)
-                    let map = demo.colorData.getMainColor()
+                    let map = demo.analyData.getMainColor()
                     let fr = document.createDocumentFragment()
                     console.log(map)
                     map.sortList.forEach(item => {
@@ -51,6 +72,9 @@
                         if (item.isDeep) (dom.style.color = '#fff')
                         dom.innerText = `${item.value} ---- ${item.percent}%`;
                         fr.appendChild(dom)
+                        dom.addEventListener('click', function() {
+                            drawCanvas(demo, demo.colorFilter_bate(item), canvasBlock.querySelector('canvas'))
+                        })
                     })
                     showBlock.appendChild(fr);
                 });
@@ -70,7 +94,7 @@
                 let showBlock = block.querySelector('.show-block')
                 pms.then(demo => {
                     showBlock.appendChild(demo.__el)
-                    let map = demo.colorData.getBorderColor({size: 0.1})
+                    let map = demo.analyData.getBorderColor({size: 0.1})
                     let fr = document.createDocumentFragment()
                     showBlock.style.background = map.sortList[0].value;
                     demo.__el.style.border = '1px solid #ccc'
@@ -150,6 +174,33 @@
                 block.querySelector('.button').addEventListener('click', function() {
                     render()
                 })
+            })()
+        </script>
+        <pre></pre>
+    </div>
+    <div class="demo-block demo-6">
+        <p class="demo-title">颜色查询</p>
+        <p class="demo-sub-title">查询颜色坐标</p>
+        <div class="img-block"></div>
+        <div class="canvas-block">
+            <canvas></canvas>
+        </div>
+        <script class="script">
+            (function() {
+                let block = document.querySelector('.demo-6')
+                let imgBlock = document.querySelector('.img-block')
+                let canvasBlock = document.querySelector('.canvas-block')
+                let pms = new Picture2color('./assets/pic9.jpeg', {event: ['click']})
+                pms.then(demo => {
+                    console.log(window.demo = demo)
+                    demo.on('color', function(e) {
+                        console.log(demo)
+                        console.log(`%c event: ${e.type} color: ${e.color.value}`, `background: ${e.color.isDeep ? '#ccc' : '#000'};color:${e.color.toColorString(1)}`)
+                        window.drawCanvas(demo, demo.colorFilter_bate(e.color), canvasBlock.querySelector('canvas'))
+                    })
+                    imgBlock.appendChild(demo.__el)
+                });
+
             })()
         </script>
         <pre></pre>

@@ -2,12 +2,13 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:27:03
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-11-26 17:32:56
+ * @Last Modified time: 2020-11-27 14:38:33
  * @Description: 色值分析
  */
 
 const Color = require("./Color");
 const ColorGroup = require("./ColorGroup");
+const Point = require('./Point')
 const utils = require("../utils");
 
 
@@ -46,12 +47,7 @@ class ColorAnalyse {
         data = Array.from(data)
         while (index * 4 <= data.length - 4) {
             let _data = data.slice(index * 4, (index + 1) * 4);
-            let position = [index % width, Math.floor(index / width)]
-            list.push({
-                colorName: utils.data2color(_data),
-                data: _data,
-                position
-            })
+            list.push(new Point(_data, {index, width, height}))
             index++
         }
         return list
@@ -64,7 +60,7 @@ class ColorAnalyse {
         let {deepStep} = this.option
         let group = new ColorGroup();
         data.forEach(item => {
-            group.concat(item.data, {deepStep})
+            group.concat(item.data, {deepStep, value: item.colorName})
         })
         return group
     }
@@ -107,11 +103,54 @@ class ColorAnalyse {
             rightX = (1 - size) * width,
             topY = size * height,
             bottomY = (1 - size) * height;
-        let _data = translateData.data.filter(item => {
-            return (item.position[0] <= leftX || item.position[0] >= rightX) && (item.position[1] >= bottomY || item.position[1] <=topY)
+        let _data = translateData.data.filter((item, index) => {
+            let _x = index % width,
+                _y = Math.ceil(index / width);
+            return (_x <= leftX || _x >= rightX) && (_y >= bottomY || _y <= topY)
         });
         _data = this.createColorGroup(_data)
         return this.getMainColor({colorStep}, _data)
+    }
+    /**
+     * 根据坐标获取颜色
+     * @param {*} x
+     * @param {*} y
+     * @param {*} colorAnalyse
+     */
+    getPositionColor(x, y, colorAnalyse) {
+        let {width, translateData} = colorAnalyse || this;
+        let data = translateData.data[y * width + x]
+        return this.colorMap.get(data.colorName)
+    }
+    /**
+     * 颜色筛选  性能问题 暂时不对外开放
+     * @param {Color | [rgba]} color
+     */
+    colorFilter_bate(color) {
+        let {translateData, colorMap} = this;
+        let {width, data} = translateData
+        if (Array.isArray(color)) {
+            return data.filter((item) => {
+                return item.colorName === utils.data2color(color)
+            })
+        } else if(typeof color === 'string') {
+            // rgba(0,0,0,1)
+            return data.filter((item) => {
+                return item.colorName === color
+            })
+        } else {
+            // Color || ColorProxy
+            if (color.isGroup) {
+                let list = color.__children.map(item => this.colorFilter_bate(item))
+                return list.reduce((list, item) => {
+                    return list.concat(...item)
+                }, [])
+            } else {
+                return data.filter((item) => {
+                    return item.colorName === color.value
+                })
+            }
+        }
     }
     /**
      * 销毁
