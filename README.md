@@ -180,7 +180,7 @@
 3. serviceWorker解决性能问题
 
 [demo-img]: ./assets/color.png
-[demo]: https://sheldonwan.github.io/picture2color/examples/
+[demo]: https://wanxiaodong404.github.io/picture2color/examples/
 
 [npm-version-img]: https://img.shields.io/npm/v/picture2color
 [npm-url]: https://www.npmjs.com/package/picture2color
