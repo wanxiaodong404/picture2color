@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:27:03
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-11-27 14:38:33
+ * @Last Modified time: 2020-11-27 14:55:43
  * @Description: 色值分析
  */
 
@@ -141,6 +141,7 @@ class ColorAnalyse {
         } else {
             // Color || ColorProxy
             if (color.isGroup) {
+                // 谨慎使用！！！！！性能瓶颈未解决，浏览器会卡死
                 let list = color.__children.map(item => this.colorFilter_bate(item))
                 return list.reduce((list, item) => {
                     return list.concat(...item)
