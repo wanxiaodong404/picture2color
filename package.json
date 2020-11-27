@@ -23,7 +23,7 @@
     },
     "config": {
         "commitzen": {
-            "path": "cz-conveentional-changelog"
+            "path": "./node_modules/cz-conveentional-changelog"
         }
     },
     "author": "wanxiaodong",

@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:36:09
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-11-27 13:54:34
+ * @Last Modified time: 2020-11-27 15:16:54
  * @Description:
  */
 const events = require('events')
@@ -11,6 +11,7 @@ const Color = require('./Color')
 const ColorGroup = require('./ColorGroup')
 const utils = require('../utils')
 const defaultOption = {
+    async: false, // 是否异步化执行 传入图片为字符串链接也会默认转化为async执行
     event: ['click'], // 绑定事件获取颜色信息 然后通过emit=>color向外反馈
     colorStep: 100, // 判定相似颜色程度, 值越大色值范围越大
     deepStep: 192 // 判定深浅色程度，值越大深浅灵敏度越小
@@ -24,33 +25,38 @@ class Picture2color extends events {
         this.__el = null;
         this.__cache = {};
         this.utils = utils
-        if (image instanceof Image) {
-            this.__el = image || null;
+        if (this.option.async || typeof image === 'string') {
+            return this.asyncInit(image)
+        } else {
             if (image.complete) {
                 this.init(image)
             } else {
                 throw Error('图片尚未加载完成')
             }
-        } else if (typeof image === 'string') {
-            return new Promise((resolve, reject) => {
-                let url = image;
-                image = new Image();
-                this.__el = image || null;
-                image.onload = () => {
-                    this.init(image);
-                    resolve(this);
-                }
-                image.onerror = function() {
-                    console.warn('图片加载失败');
-                    reject();
-                }
-                image.src = url
-            })
-        } else {
-            throw Error('请传入合法参数')
         }
     }
+    asyncInit(image) {
+        let that = this;
+        return new Promise(function(resolve, reject) {
+            if (typeof image === 'string') {
+                let url = image;
+                image = new Image();
+                image.onload = () => {
+                    that.init(image)
+                    resolve(that)
+                }
+                image.onerror = () => {
+                    reject(new Error('图片加载失败'))
+                }
+                image.src = url
+            } else {
+                that.init(image)
+                resolve(that)
+            }
+        })
+    }
     init(image) {
+        this.__el = image
         this.getImageColor = Picture2color.getImageColor;
         this.getColorData(image)
         this.destory = Picture2color.destory;

@@ -31,7 +31,7 @@
         <script class="script">
             (function() {
                 let block = document.querySelector('.demo-1')
-                let showBlock = document.querySelector('.show-block')
+                let showBlock = block.querySelector('.show-block')
                 let pms = new Picture2color('./assets/pic9.jpeg', {event: ['click']})
                 pms.then(demo => {
                     console.log(window.demo = demo)
@@ -73,6 +73,7 @@
                         dom.innerText = `${item.value} ---- ${item.percent}%`;
                         fr.appendChild(dom)
                         dom.addEventListener('click', function() {
+                            // 此处返回的是颜色组，由于性能问题，容易导致浏览器卡死， bate功能慎重使用
                             drawCanvas(demo, demo.colorFilter_bate(item), canvasBlock.querySelector('canvas'))
                         })
                     })
@@ -188,8 +189,8 @@
         <script class="script">
             (function() {
                 let block = document.querySelector('.demo-6')
-                let imgBlock = document.querySelector('.img-block')
-                let canvasBlock = document.querySelector('.canvas-block')
+                let imgBlock = block.querySelector('.img-block')
+                let canvasBlock = block.querySelector('.canvas-block')
                 let pms = new Picture2color('./assets/pic9.jpeg', {event: ['click']})
                 pms.then(demo => {
                     console.log(window.demo = demo)
