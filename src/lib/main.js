@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:36:09
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-11-27 15:16:54
+ * @Last Modified time: 2020-11-30 14:57:13
  * @Description:
  */
 const events = require('events')
@@ -10,11 +10,12 @@ const ColorAnalyse = require('./Analyse')
 const Color = require('./Color')
 const ColorGroup = require('./ColorGroup')
 const utils = require('../utils')
+const types = require('../types')
 const defaultOption = {
     async: false, // 是否异步化执行 传入图片为字符串链接也会默认转化为async执行
     event: ['click'], // 绑定事件获取颜色信息 然后通过emit=>color向外反馈
-    colorStep: 100, // 判定相似颜色程度, 值越大色值范围越大
-    deepStep: 192 // 判定深浅色程度，值越大深浅灵敏度越小
+    colorStep: 100, // 判定相似颜色程度, 值越大色值范围越大 --Color
+    deepStep: 192 // 判定深浅色程度，值越大深浅灵敏度越小  --Color
 }
 class Picture2color extends events {
     constructor(image, option) {
@@ -111,8 +112,7 @@ class Picture2color extends events {
         ctx.drawImage(image, 0, 0);
         let data = ctx.getImageData(0, 0, width, height);
         this.originColorData = data;
-        let {colorStep, deepStep} = this.option;
-        this.analyData = new ColorAnalyse(data, {colorStep, deepStep});
+        this.analyData = new ColorAnalyse(data, utils.paramsFilter.analy(this.option));
     }
     /**
      * 颜色筛选  性能问题 暂时不对外开放

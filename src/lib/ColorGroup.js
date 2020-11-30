@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-11-26 14:50:42
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-11-27 14:18:04
+ * @Last Modified time: 2020-11-30 15:00:15
  * @Description:
  */
 const Color = require('./Color');
@@ -38,7 +38,7 @@ class ColorGroup extends Count {
         if (color instanceof Color) {
             this.__pool.set(color.value, color);
             this.append(color)
-        } else if (color instanceof ColorGroup){
+        } else if (color.isGroup){
             this.__pool.set(color.proxy.value, color);
             this.append(color)
         } else {
@@ -62,7 +62,7 @@ class ColorGroup extends Count {
             } else {
                 this.pushPool(color)
             }
-        } else if (color instanceof ColorGroup) {
+        } else if (color.isGroup) {
             let data = pool.get(color.proxy.value)
             if (data) {
                 data.plus(color.count)
@@ -77,10 +77,10 @@ class ColorGroup extends Count {
                 data.plus()
                 this.plus()
             } else {
-                color = new Color(color, {
+                color = new Color(color, utils.paramsFilter.color({
                     ...option,
-                    name: colorString
-                }, this)
+                    value: colorString
+                }), this)
                 this.pushPool(color)
             }
         }

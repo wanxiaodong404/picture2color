@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:27:03
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-11-27 14:55:43
+ * @Last Modified time: 2020-11-30 14:56:40
  * @Description: 色值分析
  */
 
@@ -10,6 +10,7 @@ const Color = require("./Color");
 const ColorGroup = require("./ColorGroup");
 const Point = require('./Point')
 const utils = require("../utils");
+const types = require('../types')
 
 
 const defaultOptionColorAnalyse = {
@@ -57,10 +58,9 @@ class ColorAnalyse {
      * @param {*} data
      */
     createColorGroup(data) {
-        let {deepStep} = this.option
         let group = new ColorGroup();
         data.forEach(item => {
-            group.concat(item.data, {deepStep, value: item.colorName})
+            group.concat(item.data, utils.paramsFilter.group({...this.option, value: item.colorName}))
         })
         return group
     }
@@ -129,9 +129,10 @@ class ColorAnalyse {
     colorFilter_bate(color) {
         let {translateData, colorMap} = this;
         let {width, data} = translateData
+        let {colorType} = this.option
         if (Array.isArray(color)) {
             return data.filter((item) => {
-                return item.colorName === utils.data2color(color)
+                return item.colorName === utils.data2color(color, colorType)
             })
         } else if(typeof color === 'string') {
             // rgba(0,0,0,1)

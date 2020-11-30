@@ -2,13 +2,14 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:25:49
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-11-27 10:45:31
+ * @Last Modified time: 2020-11-30 14:59:59
  * @Description:
  * @Focus: 注意：如果是需要新增属性和方法，请确认是否需要在ColorGroup的代理中进行设置
  */
 
 const Count = require('./Count');
 const utils = require('../utils')
+const types = require('../types')
 const defaultOptionColor = {
     deepStep: 120,
     value: undefined // 优化字符串处理速度可传入提前处理好的name utils.data2color(data)
@@ -47,7 +48,7 @@ class Color extends Count {
      * @param {*} gid
      */
     static clone(color, option) {
-        let _color = new Color(color.data, {...color.option, value: color.value, ...option})
+        let _color = new Color(color.data, utils.paramsFilter.color({...color.option, value: color.value, ...option}))
         return _color
     }
 }

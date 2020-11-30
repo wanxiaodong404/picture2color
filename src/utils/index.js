@@ -2,10 +2,12 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:38:20
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-11-30 14:13:38
+ * @Last Modified time: 2020-11-30 15:06:32
  * @Description:
  */
 
+const types = require('../types')
+const paramsFilter = require('./paramsFilter')
 
  module.exports = {
       /**
@@ -15,9 +17,11 @@
      * @param {number} step
      */
     isSimilarColor(color1, color2, step = 10) {
-        let [r1, g1, b1, a1] = color1 instanceof Array ? color1 : color1.data
-        let [r2, g2, b2, a2] = color2 instanceof Array ? color2 : color2.data
-        return Math.sqrt(Math.pow((r1 - r2), 2) + Math.pow((g1 - g2), 2) + Math.pow((b1 - b2), 2)) < step
+        let [r1, g1, b1, a1] = Array.isArray(color1) ? color1 : color1.data
+        let [r2, g2, b2, a2] = Array.isArray(color2) ? color2 : color2.data
+        a1 = a1 / 255;
+        a2 = a2 / 255
+        return Math.sqrt(Math.pow((r1 * a1 - r2 * a2), 2) + Math.pow((g1 * a1 - g2 * a2), 2) + Math.pow((b1 * a1 - b2 * a2), 2)) < step
     },
     /**
      *  是否属于深色
@@ -26,7 +30,8 @@
      */
     isDeep(color, deepStep = 192) {
         let [r, g, b, a] = color.data
-        return r * 0.299 + g * 0.587 + b * 0.114 < deepStep
+        a = a / 255
+        return r * a * 0.299 + g * a * 0.587 + b * a * 0.114 < deepStep
     },
     /**
      * 生成唯一id
@@ -38,20 +43,11 @@
      * color数据转rgba
      * @param {*} data
      */
-    data2color(data, type = 0) {
-        const typeMap = {
-            rgba: 0,
-            hex: 1
-        }
+    data2color(data, type = types.RGBACOLOR) {
         try {
             let color;
             switch (type) {
-                case typeMap.rgba: {
-                    let [r, g, b, a] = data || [];
-                    color = `rgba(${r},${g},${b},${a / 255})`;
-                    break
-                }
-                case typeMap.hex: {
+                case types.HEXCOLOR: {
                     let [r, g, b, a] = data || [];
                     a = a / 255
                     r = (r * a).toString(16);
@@ -60,7 +56,14 @@
                     r = r.length > 1 ? r : `0${r}`;
                     g = g.length > 1 ? g : `0${g}`;
                     b = b.length > 1 ? b : `0${b}`;
-                    color = `#${r}${g}${b}`;
+                    let str = ['#', r, g, b]
+                    color = str.join('');
+                    break
+                }
+                default: {
+                    // types.RGBACOLOR
+                    let [r, g, b, a] = data || [];
+                    color = `rgba(${r},${g},${b},${a / 255})`;
                     break
                 }
             }
@@ -100,5 +103,6 @@
     },
     index2position(index, width = 1) {
         return [index % width, Math.ceil(index / width)]
-    }
+    },
+    paramsFilter
  }
