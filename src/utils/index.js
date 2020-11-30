@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:38:20
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-11-27 12:04:41
+ * @Last Modified time: 2020-11-30 14:13:38
  * @Description:
  */
 
@@ -54,10 +54,13 @@
                 case typeMap.hex: {
                     let [r, g, b, a] = data || [];
                     a = a / 255
-                    r = r * a
-                    g = g * a
-                    b = b * a
-                    color = `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`;
+                    r = (r * a).toString(16);
+                    g = (g * a).toString(16);
+                    b = (b * a).toString(16);
+                    r = r.length > 1 ? r : `0${r}`;
+                    g = g.length > 1 ? g : `0${g}`;
+                    b = b.length > 1 ? b : `0${b}`;
+                    color = `#${r}${g}${b}`;
                     break
                 }
             }
