@@ -8,29 +8,13 @@
     <title>Picture2color</title>
     <link rel="stylesheet" href="./assets/style.css">
     <script src="../dist/index.js"></script>
-    <script>
-        function drawCanvas(demo, list, canvas) {
-            canvas = canvas || document.createElement('canvas');
-            let ctx = canvas.getContext('2d')
-            let {width, height} = demo.__canvas
-            canvas.width = width
-            canvas.height = height
-            ctx.clearRect(0, 0, width, height)
-            ctx.drawImage(demo.__canvas, 0, 0, width, height, 0, 0, width, height)
-            ctx.strokeStyle = 'red'
-            list.forEach(item => {
-                ctx.strokeRect(...item.position, 1, 1)
-            })
-            return canvas
-        }
-    </script>
 </head>
 <body>
 <div class="container">
     <ul class="menu">
         <li class="menu-item"><a href="./demo/color-picker.html" target="demo">颜色识别</a></li>
         <li class="menu-item"><a href="./demo/color-deep.html" target="demo">深浅判定</a></li>
-        <li class="menu-item"><a href="./demo/color-analyse.html" target="demo">颜色范围</a></li>
+        <li class="menu-item"><a href="./demo/color-analyse.html" target="demo">图片颜色组成</a></li>
         <li class="menu-item"><a href="./demo/color-drage.html" target="demo">部分颜色</a></li>
         <li class="menu-item"><a href="./demo/color-point.html" target="demo">获取坐标</a></li>
         <li class="menu-item"><a href="./demo/color-similar.html" target="demo">颜色相近</a></li>

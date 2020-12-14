@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:36:09
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-12-14 17:56:38
+ * @Last Modified time: 2020-12-14 19:59:20
  * @Description:
  */
 const events = require('events')
@@ -14,7 +14,6 @@ const types = require('../types')
 const defaultOption = {
     async: false, // 是否异步化执行 传入图片为字符串链接也会默认转化为async执行
     event: ['click'], // 绑定事件获取颜色信息 然后通过emit=>color向外反馈
-    colorStep: 100, // 判定相似颜色程度, 值越大色值范围越大 --Color
     deepStep: 192 // 判定深浅色程度，值越大深浅灵敏度越小  --Color
 }
 class Picture2color extends events {
@@ -124,13 +123,6 @@ class Picture2color extends events {
      */
     colorFilter_bate(color) {
         return this.analyData.colorFilter_bate(color)
-    }
-    /**
-     * 获取图片占比主要颜色列表
-     * @params{*} {colorStep: 1-255}
-     */
-    getMainColor(option) {
-        return this.analyData.getMainColor(option);
     }
     /**
      * 以边框为界限向内获取0-0.5范围主要颜色列表

@@ -24,129 +24,63 @@
 </head>
 <body>
 <div class="container">
-    <div class="demo-block demo-3">
-        <p class="demo-title">获取部分边框颜色配置背景色</p>
-        <p class="demo-sub-title"> 分析整张图片边框向内部分颜色主要占比</p>
+    <div class="demo-block demo-2">
+        <p class="demo-title">主颜色分析</p>
+        <p class="demo-sub-title"> 分析整张图片主要颜色占比</p>
+        <div class="canvas-block" style="margin-top: 15px;">
+            <canvas></canvas>
+        </div>
         <div class="show-block" style="margin-top: 15px;"></div>
         <script class="script">
             (function() {
-                let block = document.querySelector('.demo-3')
+                let block = document.querySelector('.demo-2')
                 let subTitle = block.querySelector('.demo-sub-title')
-                let pms = new Picture2color('./assets/web.jpg')
-                let showBlock = block.querySelector('.show-block')
-                pms.then(demo => {
-                    showBlock.appendChild(demo.__el)
-                    let map = demo.analyData.getBorderColor({size: 0.1})
-                    let fr = document.createDocumentFragment()
-                    showBlock.style.background = map.sortList[0].value;
-                    demo.__el.style.border = '1px solid #ccc'
-                });
-            })()
-        </script>
-        <pre></pre>
-    </div>
-    <div class="demo-block demo-4">
-        <p class="demo-title">深浅色判定</p>
-        <p class="demo-sub-title">判断颜色是否是深色</p>
-        <div class="show-block" style="margin-top: 15px; line-height: 50px; text-align: center;"></div>
-        <div class="button">切换</div>
-        <script class="script">
-            (function() {
-                let block = document.querySelector('.demo-4')
-                let showBlock = block.querySelector('.show-block')
-                function render() {
-                    let data = [Math.random() * 255, Math.random() * 255, Math.random() * 255, 1 * 255].map(item => parseInt(item))
-                    let color = new Picture2color.Color(data);
-                    showBlock.innerText = color.value;
-                    showBlock.style.color = color.value
-                    showBlock.style.background = color.isDeep ? '#fff' : '#000' // 等同于Picture2color.isDeep(color)
-                }
-                render()
-                block.querySelector('.button').addEventListener('click', function() {
-                    render()
-                })
-            })()
-        </script>
-        <pre></pre>
-    </div>
-    <div class="demo-block demo-5">
-        <p class="demo-title">颜色范围判定</p>
-        <p class="demo-sub-title">判定两个颜色是否在特定参数范围内属于相同颜色范围</p>
-        <div class="show-block-1" style="margin-top: 15px; line-height: 50px; text-align: center;">
-            <input type="number" max="255" placeholder="255以内数字" value="255">
-            <input type="number" max="255" placeholder="255以内数字" value="255">
-            <input type="number" max="255" placeholder="255以内数字" value="255">
-            <input type="number" max="255" placeholder="255以内数字" value="255">
-            <div class="color-block" style="width: 30px;height:30px;border: 1px solid #ccc;"></div>
-        </div>
-        <div class="show-block-2" style="margin-top: 15px; line-height: 50px; text-align: center;">
-            <input type="number" max="255" placeholder="255以内数字" value="255">
-            <input type="number" max="255" placeholder="255以内数字" value="255">
-            <input type="number" max="255" placeholder="255以内数字" value="255">
-            <input type="number" max="255" placeholder="255以内数字" value="255">
-            <div class="color-block" style="width: 30px;height:30px;border: 1px solid #ccc;"></div>
-        </div>
-        <div class="color-step">
-            <label>
-                对比参数：
-                <input type="text" placeholder="0-255数字">
-            </label>
-        </div>
-        <div>
-            对比结果: <span class="result"></span>
-        </div>
-        <div class="button">对比</div>
-        <script class="script">
-            (function() {
-                let block = document.querySelector('.demo-5')
-                let showBlock = block.querySelector('.show-block-1')
-                let showBlock2 = block.querySelector('.show-block-2')
-                let colorBlock = showBlock.querySelector('.color-block')
-                let colorBlock2 = showBlock2.querySelector('.color-block')
-                function render() {
-                    let color1 = Array.prototype.map.call(showBlock.querySelectorAll('input'), (item => Number(item.value) || 0))
-                    let color2 = Array.prototype.map.call(showBlock2.querySelectorAll('input'), (item => Number(item.value) || 0))
-                    color1 = new Picture2color.Color(color1);
-                    color2 = new Picture2color.Color(color2);
-                    colorBlock.style.background = color1.value
-                    colorBlock2.style.background = color2.value
-                    let colorStep = block.querySelector('.color-step').value
-                    block.querySelector('.result').innerText = Picture2color.isSimilarColor(color1, color2, Number(colorStep) || 10)
-                }
-                block.querySelector('.button').addEventListener('click', function() {
-                    render()
-                })
-            })()
-        </script>
-        <pre></pre>
-    </div>
-    <!-- <div class="demo-block demo-6">
-        <p class="demo-title">颜色查询</p>
-        <p class="demo-sub-title">查询颜色坐标</p>
-        <div class="img-block"></div>
-        <div class="canvas-block">
-            <canvas></canvas>
-        </div>
-        <script class="script">
-            (function() {
-                let block = document.querySelector('.demo-6')
-                let imgBlock = block.querySelector('.img-block')
+                let pms = new Picture2color('../assets/pic9.jpeg', {event: ['click']})
                 let canvasBlock = block.querySelector('.canvas-block')
-                let pms = new Picture2color('./assets/pic9.jpeg', {event: ['click']})
+                let showBlock = block.querySelector('.show-block')
                 pms.then(demo => {
-                    console.log(window.demo = demo)
-                    demo.on('color', function(e) {
-                        console.log(demo)
-                        console.log(`%c event: ${e.type} color: ${e.color.toColorString()}`, `background: ${e.color.isDeep ? '#ccc' : '#000'};color:${e.color.value}`)
-                        window.drawCanvas(demo, demo.filterPoint_bate(e.color), canvasBlock.querySelector('canvas'))
+                    subTitle.insertAdjacentElement('afterend', demo.__el)
+                    let map1 = demo.analyData.colorGroup.createColorProxy({colorStep: 100});
+                    let fr = document.createDocumentFragment()
+                    console.log(map1)
+                    let _title = document.createElement('p')
+                    _title.innerText = '图片主要颜色占比'
+                    fr.appendChild(_title)
+                    map1.sortList.forEach(item => {
+                        let dom = document.createElement('div')
+                        dom.height = 10
+                        dom.style.background = item.value
+                        dom.style.cursor = 'pointer'
+                        if (item.isDeep) (dom.style.color = '#fff')
+                        dom.innerText = `${item.value} ---- ${item.percent}%`;
+                        fr.appendChild(dom)
+                        dom.addEventListener('click', function() {
+                            console.log(item)
+                        })
                     })
-                    imgBlock.appendChild(demo.__el)
+                    let map2 = demo.analyData.getBorderColor(0.2).createColorProxy({colorStep: 100});
+                    console.log(map2)
+                    _title = document.createElement('p')
+                    _title.innerText = '图片边框主要颜色占比(2/10)'
+                    fr.appendChild(_title)
+                    map2.sortList.forEach(item => {
+                        let dom = document.createElement('div')
+                        dom.height = 10
+                        dom.style.background = item.value
+                        dom.style.cursor = 'pointer'
+                        if (item.isDeep) (dom.style.color = '#fff')
+                        dom.innerText = `${item.value} ---- ${item.percent}%`;
+                        fr.appendChild(dom)
+                        dom.addEventListener('click', function() {
+                            console.log(item)
+                        })
+                    })
+                    showBlock.appendChild(fr);
                 });
-
             })()
         </script>
         <pre></pre>
-    </div> -->
+    </div>
 </div>
 <script>
     window.onload = function() {

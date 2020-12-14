@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:27:03
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-12-14 17:56:29
+ * @Last Modified time: 2020-12-14 20:01:59
  * @Description: 色值分析
  */
 
@@ -13,9 +13,7 @@ const utils = require("../utils");
 const types = require('../types')
 
 
-const defaultOptionColorAnalyse = {
-    colorStep: 100 // 色值容差-值越大颜色相似度越小
-}
+const defaultOptionColorAnalyse = {}
 class ColorAnalyse {
     constructor(colorData, option = {}) {
         this.option = Object.assign({}, defaultOptionColorAnalyse, option)
@@ -23,8 +21,8 @@ class ColorAnalyse {
         let {width, height} = colorData;
         this.width = width
         this.height = height
-        let {colorMap, translateData} = this.analyse(colorData);
-        this.colorMap = colorMap;
+        let {colorGroup, translateData} = this.analyse(colorData);
+        this.colorGroup = colorGroup;
         this.translateData = translateData;
     }
     /**
@@ -36,7 +34,7 @@ class ColorAnalyse {
         data = this.colorFormat(_data, width, height);
         return {
             translateData: {width, height, data},
-            colorMap: this.createColorGroup(data)
+            colorGroup: this.createColorGroup(data)
         }
     }/**
      *  格式化颜色数据
@@ -65,40 +63,13 @@ class ColorAnalyse {
         return group
     }
     /**
-     * 获取图片主要色值
-     * @{colorStep} Number
-     * @{data} Array
-     */
-    getMainColor(option = {}, data) {
-        data = data || this.colorMap
-        let {colorStep} = Object.assign({}, this.option, option);
-        let map = new Set();
-        data.sortList.forEach(item => {
-            let hasNoColor = true;
-            map.forEach((value, key) => {
-                if (Picture2color.isSimilarColor(value.proxy, item, colorStep)) {
-                    hasNoColor = false
-                    value.concat(item)
-                }
-            })
-            if (hasNoColor) {
-                map.add(new ColorGroup(item))
-            }
-        })
-        let _group = new ColorGroup();
-        map.forEach(function(group) {
-            _group.concat(group)
-        })
-        return _group
-    }
-    /**
      * 以边框向内方向获取范围主要色值
      * @param {*} option
      * @param {*} colorAnalyse
      */
     getBorderColor(option = {}, colorAnalyse) {
         let {width, height, translateData} = colorAnalyse || this;
-        let {size = 0.2, colorStep} = Object.assign({}, this.option, option)
+        let {size = 0.2} = Object.assign({}, this.option, option)
         let leftX = size * width,
             rightX = (1 - size) * width,
             topY = size * height,
@@ -108,8 +79,7 @@ class ColorAnalyse {
                 _y = Math.ceil(index / width);
             return (_x <= leftX || _x >= rightX) && (_y >= bottomY || _y <= topY)
         });
-        _data = this.createColorGroup(_data)
-        return this.getMainColor({colorStep}, _data)
+        return this.createColorGroup(_data)
     }
     /**
      * 根据坐标获取颜色
@@ -120,14 +90,14 @@ class ColorAnalyse {
     getPositionColor(x, y, colorAnalyse) {
         let {width, translateData} = colorAnalyse || this;
         let data = translateData.data[y * width + x]
-        return this.colorMap.get(data.colorName)
+        return this.colorGroup.get(data.colorName)
     }
     /**
      * 颜色筛选  性能问题 暂时不对外开放
      * @param {Color | [rgba]} color
      */
     colorFilter_bate(color) {
-        let {translateData, colorMap} = this;
+        let {translateData, colorGroup} = this;
         let {width, data} = translateData
         let {colorType} = this.option
         if (color instanceof Color) {
@@ -156,7 +126,7 @@ class ColorAnalyse {
     destory() {
         this.option = null;
         this.originData = null;
-        this.colorMap = null;
+        this.colorGroup = null;
         this.mainColor = null;
         this.width = null;
         this.height = null;

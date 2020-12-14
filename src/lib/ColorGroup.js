@@ -2,12 +2,13 @@
  * @Author: wanxiaodong
  * @Date: 2020-11-26 14:50:42
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-12-14 16:03:01
+ * @Last Modified time: 2020-12-14 19:53:10
  * @Description:
  */
 const Color = require('./Color');
 const Count = require('./Count');
-const utils = require('../utils')
+const utils = require('../utils');
+const { color } = require('../utils/paramsFilter');
 class ColorGroup extends Count {
     constructor(child) {
         super();
@@ -103,6 +104,34 @@ class ColorGroup extends Count {
         } else {
             return this.__pool.get(color)
         }
+    }
+    /**
+     * 创建范围颜色代理
+     * @param {*} option
+     * @param {*} colorGroup
+     */
+    createColorProxy(option = {}, colorGroup) {
+        colorGroup = colorGroup || this;
+        if (colorGroup.__proxy) return this;
+        let {colorStep} = option;
+        let map = new Set();
+        colorGroup.sortList.forEach(item => {
+            let hasNoColor = true;
+            map.forEach((value, key) => {
+                if (utils.isSimilarColor(value.proxy, item, colorStep || 100)) {
+                    hasNoColor = false
+                    value.concat(item)
+                }
+            })
+            if (hasNoColor) {
+                map.add(new ColorGroup(item))
+            }
+        })
+        let _group = new ColorGroup();
+        map.forEach((group) => {
+            _group.concat(group)
+        })
+        return _group
     }
 
     get proxy() {
