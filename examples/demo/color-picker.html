@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="picture2color,color,image">
+    <meta name="description" content="picture2color tool">
+    <title>Picture2color</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <script src="../../dist/index.js"></script>
+    <script>
+        function drawCanvas(demo, list, canvas) {
+            canvas = canvas || document.createElement('canvas');
+            let ctx = canvas.getContext('2d')
+            let {width, height} = demo.__canvas
+            canvas.width = width
+            canvas.height = height
+            ctx.clearRect(0, 0, width, height)
+            ctx.drawImage(demo.__canvas, 0, 0, width, height, 0, 0, width, height)
+            ctx.strokeStyle = 'red'
+            list.forEach(item => {
+                ctx.strokeRect(...item.position, 1, 1)
+            })
+            return canvas
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="demo-block demo-1">
+        <p class="demo-title">颜色吸取</p>
+        <p class="demo-sub-title">颜色提取工具</p>
+        <div class="show-block" style="height: 40px;border: 1px solid #ccc;margin-bottom: 25px;margin-top: 15px;"></div>
+        <script class="script">
+            (function() {
+                let block = document.querySelector('.demo-1')
+                let showBlock = block.querySelector('.show-block')
+                let pms = new Picture2color('../assets/pic9.jpeg', {event: ['click']})
+                pms.then(demo => {
+                    console.log(window.demo = demo)
+                    demo.on('color', function(e) {
+                        showBlock.style.background = e.color.value
+                        console.log(`%c event: ${e.type} color: ${e.color.value}`, `background: ${e.color.isDeep ? '#ccc' : '#000'};color:${e.color.toColorString(1)}`)
+                        console.log(e.color)
+                    })
+                    showBlock.insertAdjacentElement('beforebegin', demo.__el)
+                });
+            })()
+        </script>
+        <pre></pre>
+    </div>
+</div>
+<script>
+    window.onload = function() {
+        document.querySelectorAll('.demo-block').forEach(block => {
+            let pre = block.querySelector('pre')
+            let script = block.querySelector('.script')
+            if (pre && script) {
+                pre.innerHTML = script.innerHTML;
+            }
+        })
+    }
+</script>
+</body>
+</html>

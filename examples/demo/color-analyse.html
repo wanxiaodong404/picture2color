@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="picture2color,color,image">
+    <meta name="description" content="picture2color tool">
+    <title>Picture2color</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <script src="../../dist/index.js"></script>
+    <script>
+        function drawCanvas(demo, list, canvas) {
+            canvas = canvas || document.createElement('canvas');
+            let ctx = canvas.getContext('2d')
+            let {width, height} = demo.__canvas
+            canvas.width = width
+            canvas.height = height
+            ctx.clearRect(0, 0, width, height)
+            ctx.drawImage(demo.__canvas, 0, 0, width, height, 0, 0, width, height)
+            ctx.strokeStyle = 'red'
+            list.forEach(item => {
+                ctx.strokeRect(...item.position, 1, 1)
+            })
+            return canvas
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="demo-block demo-2">
+        <p class="demo-title">主颜色分析</p>
+        <p class="demo-sub-title"> 分析整张图片主要颜色占比</p>
+        <div class="canvas-block" style="margin-top: 15px;">
+            <canvas></canvas>
+        </div>
+        <div class="show-block" style="margin-top: 15px;"></div>
+        <script class="script">
+            (function() {
+                let block = document.querySelector('.demo-2')
+                let subTitle = block.querySelector('.demo-sub-title')
+                let pms = new Picture2color('../assets/pic9.jpeg', {event: ['click']})
+                let canvasBlock = block.querySelector('.canvas-block')
+                let showBlock = block.querySelector('.show-block')
+                pms.then(demo => {
+                    subTitle.insertAdjacentElement('afterend', demo.__el)
+                    let map = demo.analyData.getMainColor()
+                    let fr = document.createDocumentFragment()
+                    console.log(map)
+                    demo.on('color', function(e) {
+                        console.log(demo)
+                        console.log(`%c event: ${e.type} color: ${e.color.toColorString()}`, `background: ${e.color.isDeep ? '#ccc' : '#000'};color:${e.color.value}`)
+                        window.drawCanvas(demo, demo.filterPoint_bate(e.color), canvasBlock.querySelector('canvas'))
+                    })
+                    map.sortList.forEach(item => {
+                        let dom = document.createElement('div')
+                        dom.height = 10
+                        dom.style.background = item.value
+                        dom.style.cursor = 'pointer'
+                        if (item.isDeep) (dom.style.color = '#fff')
+                        dom.innerText = `${item.value} ---- ${item.percent}%`;
+                        fr.appendChild(dom)
+                        dom.addEventListener('click', function() {
+                            // 此处返回的是颜色组，由于性能问题，容易导致浏览器卡死， bate功能慎重使用,用timeout防止阻塞
+                            setTimeout(() => {
+                                drawCanvas(demo, demo.filterPoint_bate(item), canvasBlock.querySelector('canvas'))
+                            }, 0)
+                        })
+                    })
+                    showBlock.appendChild(fr);
+                });
+            })()
+        </script>
+        <pre></pre>
+    </div>
+</div>
+<script>
+    window.onload = function() {
+        document.querySelectorAll('.demo-block').forEach(block => {
+            let pre = block.querySelector('pre')
+            let script = block.querySelector('.script')
+            if (pre && script) {
+                pre.innerHTML = script.innerHTML;
+            }
+        })
+    }
+</script>
+</body>
+</html>

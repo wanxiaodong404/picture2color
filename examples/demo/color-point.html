@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="picture2color,color,image">
+    <meta name="description" content="picture2color tool">
+    <title>Picture2color</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <script src="../../dist/index.js"></script>
+    <script>
+        function drawCanvas(demo, list, canvas) {
+            canvas = canvas || document.createElement('canvas');
+            let ctx = canvas.getContext('2d')
+            let {width, height} = demo.__canvas
+            canvas.width = width
+            canvas.height = height
+            ctx.clearRect(0, 0, width, height)
+            ctx.drawImage(demo.__canvas, 0, 0, width, height, 0, 0, width, height)
+            ctx.strokeStyle = 'red'
+            list.forEach(item => {
+                ctx.strokeRect(...item.position, 1, 1)
+            })
+            return canvas
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="demo-block demo-6">
+        <p class="demo-title">查询颜色坐标(bate功能)</p>
+        <p class="demo-sub-title">查询颜色坐标</p>
+        <div class="img-block"></div>
+        <div class="canvas-block">
+            <canvas></canvas>
+        </div>
+        <script class="script">
+            (function() {
+                let block = document.querySelector('.demo-6')
+                let imgBlock = block.querySelector('.img-block')
+                let canvasBlock = block.querySelector('.canvas-block')
+                let pms = new Picture2color('../assets/pic9.jpeg', {event: ['click']})
+                pms.then(demo => {
+                    console.log(window.demo = demo)
+                    demo.on('color', function(e) {
+                        console.log(`%c event: ${e.type} color: ${e.color.value}`, `background: ${e.color.isDeep ? '#ccc' : '#000'};color:${e.color.toColorString()}`)
+                        let list = demo.colorFilter_bate(e.color);
+                        console.log(list)
+                        window.drawCanvas(demo, list, canvasBlock.querySelector('canvas'))
+                    })
+                    imgBlock.appendChild(demo.__el)
+                });
+
+            })()
+        </script>
+        <pre></pre>
+    </div>
+</div>
+<script>
+    window.onload = function() {
+        document.querySelectorAll('.demo-block').forEach(block => {
+            let pre = block.querySelector('pre')
+            let script = block.querySelector('.script')
+            if (pre && script) {
+                pre.innerHTML = script.innerHTML;
+            }
+        })
+    }
+</script>
+</body>
+</html>

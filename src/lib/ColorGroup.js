@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-11-26 14:50:42
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-11-30 15:00:15
+ * @Last Modified time: 2020-12-14 16:03:01
  * @Description:
  */
 const Color = require('./Color');
@@ -108,12 +108,14 @@ class ColorGroup extends Count {
     get proxy() {
         return this.__proxy
     }
-
-    set proxy(color) {
-        if (!this.__proxy) {
-            this.__proxy = color
-        }
-    }
+    /**
+     * 不允许设置
+     */
+    // set proxy(color) {
+    //     if (!this.__proxy) {
+    //         this.__proxy = color
+    //     }
+    // }
 
     get value() {
         return  this.proxy && this.proxy.value

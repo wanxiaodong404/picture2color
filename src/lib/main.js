@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:36:09
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-11-30 14:57:13
+ * @Last Modified time: 2020-12-14 17:56:38
  * @Description:
  */
 const events = require('events')
@@ -36,6 +36,10 @@ class Picture2color extends events {
             }
         }
     }
+    /**
+     * 异步初始化
+     * @param {*} image
+     */
     asyncInit(image) {
         let that = this;
         return new Promise(function(resolve, reject) {

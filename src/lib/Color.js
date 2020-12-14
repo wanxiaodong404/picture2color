@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:25:49
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-11-30 14:59:59
+ * @Last Modified time: 2020-12-14 16:52:37
  * @Description:
  * @Focus: 注意：如果是需要新增属性和方法，请确认是否需要在ColorGroup的代理中进行设置
  */
@@ -38,7 +38,7 @@ class Color extends Count {
      * 转换不同的color string
      * @param {*} type
      */
-    toColorString(type = 0) {
+    toColorString(type = types.RGBACOLOR) {
         return utils.data2color(this.data, type)
     }
     /**

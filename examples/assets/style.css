@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-26 11:38:20
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-10-26 15:54:38
+ * @Last Modified time: 2020-12-14 17:35:06
  * @Description:
  */
 
@@ -19,6 +19,36 @@ img {
     display: block;
     max-width: 100%;
     margin: 0 auto;
+}
+
+iframe {
+    display: block;
+    width: 100%;
+    min-height: 80vh;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 25px 0;
+}
+.menu {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.menu-item {
+    display: block;
+    width: 50%;
+    color: #666;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all .2s linear;
+    line-height: 32px;
+    border-radius: 2px;
+    padding: 5px 15px;
+}
+.menu-item:hover {
+    background-color: #eee;
+    color: #333;
 }
 
 .demo-block {

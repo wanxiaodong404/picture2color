@@ -24,65 +24,6 @@
 </head>
 <body>
 <div class="container">
-    <div class="demo-block demo-1">
-        <p class="demo-title">颜色吸取</p>
-        <p class="demo-sub-title">颜色提取工具</p>
-        <div class="show-block" style="height: 40px;border: 1px solid #ccc;margin-bottom: 25px;margin-top: 15px;"></div>
-        <script class="script">
-            (function() {
-                let block = document.querySelector('.demo-1')
-                let showBlock = block.querySelector('.show-block')
-                let pms = new Picture2color('./assets/pic9.jpeg', {event: ['click']})
-                pms.then(demo => {
-                    console.log(window.demo = demo)
-                    demo.on('color', function(e) {
-                        showBlock.style.background = e.color.value
-                        console.log(`%c event: ${e.type} color: ${e.color.value}`, `background: ${e.color.isDeep ? '#ccc' : '#000'};color:${e.color.toColorString(1)}`)
-                        console.log(e.color)
-                    })
-                    showBlock.insertAdjacentElement('beforebegin', demo.__el)
-                });
-            })()
-        </script>
-        <pre></pre>
-    </div>
-    <div class="demo-block demo-2">
-        <p class="demo-title">主颜色分析</p>
-        <p class="demo-sub-title"> 分析整张图片主要颜色占比</p>
-        <div class="canvas-block" style="margin-top: 15px;">
-            <canvas></canvas>
-        </div>
-        <div class="show-block" style="margin-top: 15px;"></div>
-        <script class="script">
-            (function() {
-                let block = document.querySelector('.demo-2')
-                let subTitle = block.querySelector('.demo-sub-title')
-                let pms = new Picture2color('./assets/pic9.jpeg')
-                let canvasBlock = block.querySelector('.canvas-block')
-                let showBlock = block.querySelector('.show-block')
-                pms.then(demo => {
-                    subTitle.insertAdjacentElement('afterend', demo.__el)
-                    let map = demo.analyData.getMainColor()
-                    let fr = document.createDocumentFragment()
-                    console.log(map)
-                    map.sortList.forEach(item => {
-                        let dom = document.createElement('div')
-                        dom.height = 10
-                        dom.style.background = item.value
-                        if (item.isDeep) (dom.style.color = '#fff')
-                        dom.innerText = `${item.value} ---- ${item.percent}%`;
-                        fr.appendChild(dom)
-                        dom.addEventListener('click', function() {
-                            // 此处返回的是颜色组，由于性能问题，容易导致浏览器卡死， bate功能慎重使用
-                            drawCanvas(demo, demo.colorFilter_bate(item), canvasBlock.querySelector('canvas'))
-                        })
-                    })
-                    showBlock.appendChild(fr);
-                });
-            })()
-        </script>
-        <pre></pre>
-    </div>
     <div class="demo-block demo-3">
         <p class="demo-title">获取部分边框颜色配置背景色</p>
         <p class="demo-sub-title"> 分析整张图片边框向内部分颜色主要占比</p>
@@ -179,7 +120,7 @@
         </script>
         <pre></pre>
     </div>
-    <div class="demo-block demo-6">
+    <!-- <div class="demo-block demo-6">
         <p class="demo-title">颜色查询</p>
         <p class="demo-sub-title">查询颜色坐标</p>
         <div class="img-block"></div>
@@ -196,8 +137,8 @@
                     console.log(window.demo = demo)
                     demo.on('color', function(e) {
                         console.log(demo)
-                        console.log(`%c event: ${e.type} color: ${e.color.value}`, `background: ${e.color.isDeep ? '#ccc' : '#000'};color:${e.color.toColorString(1)}`)
-                        window.drawCanvas(demo, demo.colorFilter_bate(e.color), canvasBlock.querySelector('canvas'))
+                        console.log(`%c event: ${e.type} color: ${e.color.toColorString()}`, `background: ${e.color.isDeep ? '#ccc' : '#000'};color:${e.color.value}`)
+                        window.drawCanvas(demo, demo.filterPoint_bate(e.color), canvasBlock.querySelector('canvas'))
                     })
                     imgBlock.appendChild(demo.__el)
                 });
@@ -205,7 +146,7 @@
             })()
         </script>
         <pre></pre>
-    </div>
+    </div> -->
 </div>
 <script>
     window.onload = function() {

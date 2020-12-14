@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="picture2color,color,image">
+    <meta name="description" content="picture2color tool">
+    <title>Picture2color</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <script src="../../dist/index.js"></script>
+    <script>
+        function drawCanvas(demo, list, canvas) {
+            canvas = canvas || document.createElement('canvas');
+            let ctx = canvas.getContext('2d')
+            let {width, height} = demo.__canvas
+            canvas.width = width
+            canvas.height = height
+            ctx.clearRect(0, 0, width, height)
+            ctx.drawImage(demo.__canvas, 0, 0, width, height, 0, 0, width, height)
+            ctx.strokeStyle = 'red'
+            list.forEach(item => {
+                ctx.strokeRect(...item.position, 1, 1)
+            })
+            return canvas
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="demo-block demo-3">
+        <p class="demo-title">获取部分边框颜色配置背景色</p>
+        <p class="demo-sub-title"> 分析整张图片边框向内部分颜色主要占比</p>
+        <div class="show-block" style="margin-top: 15px;"></div>
+        <script class="script">
+            (function() {
+                let block = document.querySelector('.demo-3')
+                let subTitle = block.querySelector('.demo-sub-title')
+                let pms = new Picture2color('../assets/web.jpg')
+                let showBlock = block.querySelector('.show-block')
+                pms.then(demo => {
+                    showBlock.appendChild(demo.__el)
+                    let map = demo.analyData.getBorderColor({size: 0.1})
+                    let fr = document.createDocumentFragment()
+                    showBlock.style.background = map.sortList[0].value;
+                    showBlock.style.padding = '10px';
+                    demo.__el.style.border = '1px solid #000'
+                });
+            })()
+        </script>
+        <pre></pre>
+    </div>
+</div>
+<script>
+    window.onload = function() {
+        document.querySelectorAll('.demo-block').forEach(block => {
+            let pre = block.querySelector('pre')
+            let script = block.querySelector('.script')
+            if (pre && script) {
+                pre.innerHTML = script.innerHTML;
+            }
+        })
+    }
+</script>
+</body>
+</html>

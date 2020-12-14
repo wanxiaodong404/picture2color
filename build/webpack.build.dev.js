@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-09-09 13:45:29
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-09-11 18:00:40
+ * @Last Modified time: 2020-12-14 16:55:18
  * @Description:
  */
 const config = require('./webpack.config.base')
@@ -25,7 +25,7 @@ module.exports = function() {
             new HtmlPlugin({
                 inject: 'head',
                 filename: 'index.html',
-                template: path.resolve(__dirname, '../examples/template.html')
+                template: path.resolve(__dirname, '../examples/dev-demo.html')
             })
         ]
     })

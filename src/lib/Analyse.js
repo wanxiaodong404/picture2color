@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:27:03
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-11-30 14:56:40
+ * @Last Modified time: 2020-12-14 17:56:29
  * @Description: 色值分析
  */
 
@@ -130,28 +130,24 @@ class ColorAnalyse {
         let {translateData, colorMap} = this;
         let {width, data} = translateData
         let {colorType} = this.option
-        if (Array.isArray(color)) {
+        if (color instanceof Color) {
+            return data.filter((item) => {
+                return item.colorName === color.value
+            })
+        } else if(color.isGroup) {
+            let list = color.__children.map(item => this.colorFilter_bate(item))
+            return list.reduce((list, item) => {
+                return list.concat(...item)
+            }, [])
+        } else if (Array.isArray(color)) {
             return data.filter((item) => {
                 return item.colorName === utils.data2color(color, colorType)
             })
-        } else if(typeof color === 'string') {
+        } else {
             // rgba(0,0,0,1)
             return data.filter((item) => {
                 return item.colorName === color
             })
-        } else {
-            // Color || ColorProxy
-            if (color.isGroup) {
-                // 谨慎使用！！！！！性能瓶颈未解决，浏览器会卡死
-                let list = color.__children.map(item => this.colorFilter_bate(item))
-                return list.reduce((list, item) => {
-                    return list.concat(...item)
-                }, [])
-            } else {
-                return data.filter((item) => {
-                    return item.colorName === color.value
-                })
-            }
         }
     }
     /**
