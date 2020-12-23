@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:25:49
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-12-14 16:52:37
+ * @Last Modified time: 2020-12-23 16:37:47
  * @Description:
  * @Focus: 注意：如果是需要新增属性和方法，请确认是否需要在ColorGroup的代理中进行设置
  */
@@ -17,7 +17,7 @@ const defaultOptionColor = {
 const groupMap = new Map()
 class Color extends Count {
     constructor(data, option = {}) {
-        super()
+        super(1) // count = 1
         this.option = Object.assign({}, defaultOptionColor, option)
         this.data = data;
         this.__colorName = option.value || null; // 颜色名
@@ -48,7 +48,8 @@ class Color extends Count {
      * @param {*} gid
      */
     static clone(color, option) {
-        let _color = new Color(color.data, utils.paramsFilter.color({...color.option, value: color.value, ...option}))
+        let _color = new Color(color.data, utils.paramsFilter.color({...color.option, value: color.__colorName, ...option}))
+        _color.resetCount(color.__count)
         return _color
     }
 }

@@ -2,29 +2,32 @@
  * @Author: wanxiaodong
  * @Date: 2020-11-26 16:55:46
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-11-27 13:37:26
+ * @Last Modified time: 2020-12-23 15:52:56
  * @Description: 用于统计count
  */
 
 class Count {
-    constructor(base = 1) {
+    constructor(base = 0) {
         this.__count = base;
         this.__children = [];
         this.__parent = null;
     }
 
-    resetCount(count = 1) {
+    resetCount(count = 0) {
         this.__count = count
     }
 
     append(item) {
         this.__children.push(item)
         item.__parent = this;
-        this.plus(item.count)
+        this.plus(item.__count)
     }
 
     plus(count = 1) {
         this.__count += count
+        if (this.__parent) {
+            this.__parent.plus(count)
+        }
     }
 
     get count() {
@@ -33,7 +36,7 @@ class Count {
 
     get percent() {
         if (this.__parent) {
-            return this.count / this.__parent.count * 100
+            return this.__count / this.__parent.__count * 100
         } else {
             return 100
         }
