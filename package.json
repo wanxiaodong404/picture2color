@@ -1,12 +1,17 @@
 {
     "name": "picture2color",
-    "version": "0.1.0",
+    "version": "0.1.01",
     "description": "图片颜色获取, 颜色识别,颜色分析,取色",
     "keywords": [
+        "图片",
         "颜色",
         "颜色识别",
         "颜色提取",
         "图片颜色",
+        "rgba",
+        "rgb",
+        "picture",
+        "color",
         "color picker",
         "picture2color"
     ],
