@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:36:09
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-12-14 19:59:20
+ * @Last Modified time: 2020-12-23 13:43:39
  * @Description:
  */
 const events = require('events')
@@ -125,11 +125,17 @@ class Picture2color extends events {
         return this.analyData.colorFilter_bate(color)
     }
     /**
+     * 获取图片主要颜色列表
+     */
+    getColorGroup() {
+        return this.analyData.colorGroup
+    }
+    /**
      * 以边框为界限向内获取0-0.5范围主要颜色列表
      * @param {*} option {size: 0-0.5}
      */
-    getBorderColor(option) {
-        return this.analyData.getBorderColor(option);
+    getFrameColorGroup(option) {
+        return this.analyData.getFrameColorGroup(option);
     }
     /**
      * 判断颜色或者颜色列表是否是深色

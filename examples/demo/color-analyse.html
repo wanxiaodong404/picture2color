@@ -33,6 +33,7 @@
         <div class="canvas-block" style="margin-top: 15px;">
             <canvas></canvas>
         </div>
+        <div class="button">切换 colorProxy &lt;==&gt; Color</div>
         <div class="show-block" style="margin-top: 15px;"></div>
         <script class="script">
             (function() {
@@ -41,11 +42,21 @@
                 let pms = new Picture2color('../assets/pic9.jpeg', {event: ['click']})
                 let canvasBlock = block.querySelector('.canvas-block')
                 let showBlock = block.querySelector('.show-block')
+                let status = false
                 pms.then(demo => {
                     subTitle.insertAdjacentElement('afterend', demo.__el)
-                    let map1 = demo.analyData.colorGroup.crateColorProxy();
+                    let map1 = demo.getColorGroup();
+                    let map2 = demo.getFrameColorGroup(0.2);
+                    render(map1, map2)
+                    block.querySelector('.button').addEventListener('click', function() {
+                        render(map1, map2)
+                    })
+                });
+                function render(map1, map2) {
+                    status = !status;
+                    map1 = status ? map1.createColorProxy() : map1;
+                    map2 = status ? map2.createColorProxy() : map2;
                     let fr = document.createDocumentFragment()
-                    console.log(map1)
                     let _title = document.createElement('p')
                     _title.innerText = '图片主要颜色占比'
                     fr.appendChild(_title)
@@ -61,8 +72,6 @@
                             console.log(item)
                         })
                     })
-                    let map2 = demo.analyData.getBorderColor(0.2).crateColorProxy();
-                    console.log(map2)
                     _title = document.createElement('p')
                     _title.innerText = '图片边框主要颜色占比(2/10)'
                     fr.appendChild(_title)
@@ -78,8 +87,9 @@
                             console.log(item)
                         })
                     })
+                    showBlock.innerHTML = ''
                     showBlock.appendChild(fr);
-                });
+                }
             })()
         </script>
         <pre></pre>

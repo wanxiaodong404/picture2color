@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:27:03
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-12-14 20:01:59
+ * @Last Modified time: 2020-12-23 14:18:17
  * @Description: 色值分析
  */
 
@@ -67,7 +67,7 @@ class ColorAnalyse {
      * @param {*} option
      * @param {*} colorAnalyse
      */
-    getBorderColor(option = {}, colorAnalyse) {
+    getFrameColorGroup(option = {}, colorAnalyse) {
         let {width, height, translateData} = colorAnalyse || this;
         let {size = 0.2} = Object.assign({}, this.option, option)
         let leftX = size * width,
