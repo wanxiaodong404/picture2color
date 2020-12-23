@@ -104,7 +104,7 @@
     /**
      * 获取图片占比主要颜色列表
      */
-    instance.getColorMap() // 返回ColorGroup实例
+    instance.getColorGroup() // 返回ColorGroup实例
 ```
 2、以边框为界限向内获取主要颜色列表（数据量大的时候计算时间会比较长）
 ```javascript
