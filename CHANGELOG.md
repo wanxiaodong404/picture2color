@@ -1,12 +1,3 @@
-## [0.1.1](https://github.com/sheldonWan/picture2color/compare/v0.1.0...v0.1.1) (2020-12-23)
-
-
-### Bug Fixes
-
-* fixed count bug ([2b1a699](https://github.com/sheldonWan/picture2color/commit/2b1a69969c5b774c8a301cd6bf2a159da31f8287))
-
-
-
 # [0.1.0](https://github.com/sheldonWan/picture2color/compare/v0.0.10...v0.1.0) (2020-12-23)
 
 
