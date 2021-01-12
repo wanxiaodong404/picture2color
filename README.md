@@ -191,8 +191,8 @@
 
 [e-mail]: mailto://729779978@qq.com
 
-[issues-img]: https://img.shields.io/bitbucket/issues-raw/sheldonWan/picture2color
-[issues]: https://github.com/sheldonWan/picture2color/issues
+[issues-img]: https://img.shields.io/bitbucket/issues-raw/wanxiaodong404/picture2color
+[issues]: https://github.com/wanxiaodong404/picture2color/issues
 
-[pr-img]: https://img.shields.io/bitbucket/pr-raw/sheldonWan/picture2color
-[pr]: https://github.com/sheldonWan/picture2color/pr
+[pr-img]: https://img.shields.io/bitbucket/pr-raw/wanxiaodong404/picture2color
+[pr]: https://github.com/wanxiaodong404/picture2color/pr
