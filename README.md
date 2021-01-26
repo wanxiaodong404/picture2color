@@ -34,7 +34,7 @@
 
 ## install
 ``` bash
-    npm install picture2color
+    npm install --save picture2color
 ```
 
 ## import
