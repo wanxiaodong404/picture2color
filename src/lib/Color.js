@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:25:49
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-12-23 16:37:47
+ * @Last Modified time: 2021-01-26 12:14:55
  * @Description:
  * @Focus: 注意：如果是需要新增属性和方法，请确认是否需要在ColorGroup的代理中进行设置
  */
@@ -10,15 +10,17 @@
 const Count = require('./Count');
 const utils = require('../utils')
 const types = require('../types')
+const paramsFilter = require('../utils/paramsFilter')
 const defaultOptionColor = {
     deepStep: 120,
-    value: undefined // 优化字符串处理速度可传入提前处理好的name utils.data2color(data)
+    value: undefined, // 优化字符串处理速度可传入提前处理好的name utils.data2color(data)
+    type: types.RGBACOLOR
 }
 const groupMap = new Map()
 class Color extends Count {
     constructor(data, option = {}) {
         super(1) // count = 1
-        this.option = Object.assign({}, defaultOptionColor, option)
+        this.option = paramsFilter.color(Object.assign({}, defaultOptionColor, option));
         this.data = data;
         this.__colorName = option.value || null; // 颜色名
     }
@@ -39,7 +41,7 @@ class Color extends Count {
      * @param {*} type
      */
     toColorString(type = types.RGBACOLOR) {
-        return utils.data2color(this.data, type)
+        return utils.data2color(this.data, this.option.type || type)
     }
     /**
      * 克隆color对象

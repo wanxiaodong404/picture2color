@@ -2,13 +2,13 @@
  * @Author: wanxiaodong
  * @Date: 2020-11-26 14:50:42
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-12-23 16:48:34
+ * @Last Modified time: 2021-01-26 13:59:18
  * @Description:
  */
 const Color = require('./Color');
 const Count = require('./Count');
 const utils = require('../utils');
-const { color } = require('../utils/paramsFilter');
+const paramsFilter = require('../utils/paramsFilter')
 class ColorGroup extends Count {
     constructor(child) {
         super();
@@ -73,7 +73,7 @@ class ColorGroup extends Count {
             if (data) {
                 data.plus()
             } else {
-                color = new Color(color, utils.paramsFilter.color({
+                color = new Color(color, paramsFilter.color({
                     ...option,
                     value: colorString
                 }), this)

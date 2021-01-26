@@ -2,10 +2,11 @@
  * @Author: wanxiaodong
  * @Date: 2020-11-27 13:35:10
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-12-14 15:28:08
+ * @Last Modified time: 2021-01-26 11:12:51
  * @Description:
  */
 const utils = require("../utils")
+const paramsFilter = require('../utils/paramsFilter')
 const defaultOption = {
     index: 0,
     width: 0,
@@ -14,7 +15,7 @@ const defaultOption = {
 }
 class Point {
     constructor(data, option = {}) {
-        this.option = Object.assign({}, defaultOption, option)
+        this.option = paramsFilter.point(Object.assign({}, defaultOption, option));
         let {index, width, height, name} = this.option
         this.data = data
         this.index = index

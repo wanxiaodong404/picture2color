@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-11-30 14:45:57
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-12-23 11:01:17
+ * @Last Modified time: 2021-01-26 12:15:18
  * @Description: 处理各个类的参数
  */
 
@@ -22,10 +22,14 @@ function count(params) {
 function point(params) {
     return Object.assign({}, params)
 }
+function main(params) {
+    return Object.assign({}, params)
+}
 module.exports = {
     analy,
     color,
     group,
     count,
-    point
+    point,
+    main
 }

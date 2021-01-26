@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:36:09
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-12-23 13:43:39
+ * @Last Modified time: 2021-01-26 11:11:11
  * @Description:
  */
 const events = require('events')
@@ -10,6 +10,7 @@ const ColorAnalyse = require('./Analyse')
 const Color = require('./Color')
 const ColorGroup = require('./ColorGroup')
 const utils = require('../utils')
+const paramsFilter = require('../utils/paramsFilter')
 const types = require('../types')
 const defaultOption = {
     async: false, // 是否异步化执行 传入图片为字符串链接也会默认转化为async执行
@@ -21,7 +22,7 @@ class Picture2color extends events {
         super();
         this.originColorData = null
         this.colorData = null;
-        this.option = Object.assign({}, defaultOption, (option || {}));
+        this.option = paramsFilter.main(Object.assign({}, defaultOption, (option || {})));
         this.__el = null;
         this.__cache = {};
         this.utils = utils

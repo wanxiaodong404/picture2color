@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:27:03
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2020-12-23 14:18:17
+ * @Last Modified time: 2021-01-26 11:11:40
  * @Description: 色值分析
  */
 
@@ -10,13 +10,14 @@ const Color = require("./Color");
 const ColorGroup = require("./ColorGroup");
 const Point = require('./Point')
 const utils = require("../utils");
+const paramsFilter = require('../utils/paramsFilter')
 const types = require('../types')
 
 
 const defaultOptionColorAnalyse = {}
 class ColorAnalyse {
     constructor(colorData, option = {}) {
-        this.option = Object.assign({}, defaultOptionColorAnalyse, option)
+        this.option = paramsFilter.analy(Object.assign({}, defaultOptionColorAnalyse, option))
         this.originData = colorData;
         let {width, height} = colorData;
         this.width = width
