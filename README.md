@@ -198,6 +198,6 @@
 
 
 [size-img]: https://img.shields.io/badge/minified%20size-16%20kB-informational
-[file-img]: https://img.shields.io/badge/files-8-blue
+[file-img]: https://img.shields.io/badge/files-36-blue
 [pr-img]: https://img.shields.io/bitbucket/pr-raw/wanxiaodong404/picture2color
 [pr]: https://github.com/wanxiaodong404/picture2color/pr
