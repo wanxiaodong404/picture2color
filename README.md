@@ -5,6 +5,8 @@
 [![MIT License][license-image]][license-url]
 [![issues-img]][issues]
 [![pr-img]][pr]
+[![size-img]][size-img]
+[![file-img]][file-img]
 
 ## 简介
 此模块旨在解决前端在图片颜色识别上的问题，有问题可以联系
@@ -196,3 +198,6 @@
 
 [pr-img]: https://img.shields.io/bitbucket/pr-raw/sheldonWan/picture2color
 [pr]: https://github.com/sheldonWan/picture2color/pr
+
+[size-img]: https://img.shields.io/badge/minified%20size-16%20kB-informational
+[file-img]: https://img.shields.io/badge/files-8-blue
