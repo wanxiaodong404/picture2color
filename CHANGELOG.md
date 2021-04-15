@@ -1,3 +1,31 @@
+## [0.1.3](https://github.com/sheldonWan/picture2color/compare/v0.1.2...v0.1.3) (2021-01-26)
+
+
+### Bug Fixes
+
+* import ([7240d0c](https://github.com/sheldonWan/picture2color/commit/7240d0c3b1fdd61955116e1d5829e5ffe5ceb4ae))
+
+
+
+## [0.1.2](https://github.com/sheldonWan/picture2color/compare/v0.1.1...v0.1.2) (2021-01-26)
+
+
+
+## [0.1.1](https://github.com/sheldonWan/picture2color/compare/v0.1.0...v0.1.1) (2020-12-23)
+
+
+### Bug Fixes
+
+* fixed count bug ([88fb927](https://github.com/sheldonWan/picture2color/commit/88fb927fd34cd2f165dcebbe962b7327bee49b6b))
+* fixed count bug ([829c1dc](https://github.com/sheldonWan/picture2color/commit/829c1dcce3be8aa91811da0e325bc2fc78878147))
+
+
+### Features
+
+* keyword ([a117dbe](https://github.com/sheldonWan/picture2color/commit/a117dbe84f522205b30ad0dad0cd3bcafa08ec6d))
+
+
+
 # [0.1.0](https://github.com/sheldonWan/picture2color/compare/v0.0.10...v0.1.0) (2020-12-23)
 
 

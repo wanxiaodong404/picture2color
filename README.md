@@ -36,7 +36,7 @@
 
 ## install
 ``` bash
-    npm install picture2color
+    npm install --save picture2color
 ```
 
 ## import
@@ -193,11 +193,16 @@
 
 [e-mail]: mailto://729779978@qq.com
 
-[issues-img]: https://img.shields.io/bitbucket/issues-raw/sheldonWan/picture2color
-[issues]: https://github.com/sheldonWan/picture2color/issues
+[issues-img]: https://img.shields.io/bitbucket/issues-raw/wanxiaodong404/picture2color
+[issues]: https://github.com/wanxiaodong404/picture2color/issues
 
+<<<<<<< HEAD
 [pr-img]: https://img.shields.io/bitbucket/pr-raw/sheldonWan/picture2color
 [pr]: https://github.com/sheldonWan/picture2color/pr
 
 [size-img]: https://img.shields.io/badge/minified%20size-16%20kB-informational
 [file-img]: https://img.shields.io/badge/files-8-blue
+=======
+[pr-img]: https://img.shields.io/bitbucket/pr-raw/wanxiaodong404/picture2color
+[pr]: https://github.com/wanxiaodong404/picture2color/pr
+>>>>>>> master
