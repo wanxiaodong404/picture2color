@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:25:49
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2021-01-26 12:14:55
+ * @Last Modified time: 2021-09-08 18:02:21
  * @Description:
  * @Focus: 注意：如果是需要新增属性和方法，请确认是否需要在ColorGroup的代理中进行设置
  */
@@ -20,6 +20,7 @@ const groupMap = new Map()
 class Color extends Count {
     constructor(data, option = {}) {
         super(1) // count = 1
+        if (data instanceof Color) return data;
         this.option = paramsFilter.color(Object.assign({}, defaultOptionColor, option));
         this.data = data;
         this.__colorName = option.value || null; // 颜色名

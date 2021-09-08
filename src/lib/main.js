@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:36:09
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2021-01-26 11:11:11
+ * @Last Modified time: 2021-09-08 18:50:01
  * @Description:
  */
 const events = require('events')
@@ -213,8 +213,8 @@ class Picture2color extends events {
     }
     /**
      * 颜色是否在对应的范围内色值相似
-     * @param {Color | [r,g,b,a]} color1
-     * @param {Color | [r,g,b,a]} color2
+     * @param {Color | [r,g,b,a] ｜ string} color1
+     * @param {Color | [r,g,b,a] ｜ string} color2
      * @param {number 1-255} step
      */
     static isSimilarColor(color1, color2) {

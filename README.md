@@ -173,6 +173,9 @@
     countInstance.percent // Number 百分比
 ```
 
+## 小更新
+1. isSimilarColor等静态方法支持字符串#fff、rgba(255,255,255)
+
 ## 未来可期
 
 1. 同颜色坐标查找
