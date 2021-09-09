@@ -27,7 +27,7 @@
         "url": "git+https://github.com/sheldonWan/picture2color.git"
     },
     "config": {
-        "commitzen": {
+        "commitizen": {
             "path": "./node_modules/cz-conventional-changelog"
         }
     },
