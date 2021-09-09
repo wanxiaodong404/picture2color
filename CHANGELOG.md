@@ -1,3 +1,14 @@
+## [0.1.6](https://github.com/sheldonWan/picture2color/compare/v0.1.3...v0.1.6) (2021-09-09)
+
+
+### Features
+
+* 静态方法优化 ([e4edb5d](https://github.com/sheldonWan/picture2color/commit/e4edb5da8c174c292042bff2c0552af9b7a7005f))
+* build ([91cb7c7](https://github.com/sheldonWan/picture2color/commit/91cb7c72d106f4a4d938ab44eadc5c5912302d2e))
+* new version ([da94a96](https://github.com/sheldonWan/picture2color/commit/da94a96ce09c16fe1ed3028ca28b147af4210a1f))
+
+
+
 ## [0.1.3](https://github.com/sheldonWan/picture2color/compare/v0.1.2...v0.1.3) (2021-01-26)
 
 
@@ -47,10 +58,10 @@
 
 ### Features
 
-* 新增demo ([6a89dc3](https://github.com/sheldonWan/picture2color/commit/6a89dc3afcb71bd24ad2b56e47f5c993d8c542d9))
-* 新增异步执行参数以及changlog调整 ([a416ee9](https://github.com/sheldonWan/picture2color/commit/a416ee9429c9b9db8fd4cfd2fe37d95275fd1534))
-* 新添加point类 ([e45f673](https://github.com/sheldonWan/picture2color/commit/e45f673712c75b4c5e2b1638c412a2fd35b74283))
 * 添加changelog ([fa7aa18](https://github.com/sheldonWan/picture2color/commit/fa7aa18b8c21810e5fd9c80e898591332ab93094))
+* 新添加point类 ([e45f673](https://github.com/sheldonWan/picture2color/commit/e45f673712c75b4c5e2b1638c412a2fd35b74283))
+* 新增异步执行参数以及changlog调整 ([a416ee9](https://github.com/sheldonWan/picture2color/commit/a416ee9429c9b9db8fd4cfd2fe37d95275fd1534))
+* 新增demo ([6a89dc3](https://github.com/sheldonWan/picture2color/commit/6a89dc3afcb71bd24ad2b56e47f5c993d8c542d9))
 
 
 
