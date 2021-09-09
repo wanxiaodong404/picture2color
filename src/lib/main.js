@@ -2,7 +2,7 @@
  * @Author: wanxiaodong
  * @Date: 2020-10-19 16:36:09
  * @Last Modified by: wanxiaodong
- * @Last Modified time: 2021-09-08 18:50:01
+ * @Last Modified time: 2021-09-09 10:12:16
  * @Description:
  */
 const events = require('events')
@@ -25,7 +25,7 @@ class Picture2color extends events {
         this.option = paramsFilter.main(Object.assign({}, defaultOption, (option || {})));
         this.__el = null;
         this.__cache = {};
-        this.utils = utils
+        // this.utils = utils 不对外暴露
         if (this.option.async || typeof image === 'string') {
             return this.asyncInit(image)
         } else {
@@ -46,6 +46,7 @@ class Picture2color extends events {
             if (typeof image === 'string') {
                 let url = image;
                 image = new Image();
+                image.setAttribute('crossOrigin', 'anonymous');
                 image.onload = () => {
                     that.init(image)
                     resolve(that)

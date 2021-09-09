@@ -32,10 +32,17 @@
             </div>
             <div class="button">切换 colorProxy &lt;==&gt; Color</div>
             <div class="show-block" style="margin-top: 15px;"></div>
+            <img id='img' src="https://raw.githubusercontent.com/sheldonWan/picture2color/HEAD/assets/color.png" crossOrigin="anonymous" alt="">
             <script class="script">
                 (function() {
                     console.log({Picture2color})
-                    console.log(Picture2color.isSimilarColor('rgba(255,255,255)', '#fff'))
+                    console.log(Picture2color.isSimilarColor('rgba(255,255,255)', '#fff'));
+                    setTimeout(() => {
+                        let instance = new Picture2color('https://raw.githubusercontent.com/sheldonWan/picture2color/HEAD/assets/color.png')
+                        instance.then(function() {
+                            console.log(arguments);
+                        })
+                    }, 1000)
                 })()
             </script>
             <pre></pre>

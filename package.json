@@ -1,6 +1,6 @@
 {
     "name": "picture2color",
-    "version": "0.1.05",
+    "version": "0.1.06",
     "description": "图片颜色获取, 颜色识别,颜色分析,取色",
     "keywords": [
         "图片",
@@ -28,7 +28,12 @@
     },
     "config": {
         "commitzen": {
-            "path": "./node_modules/cz-conveentional-changelog"
+            "path": "./node_modules/cz-conventional-changelog"
+        }
+    },
+    "husky": {
+        "hooks": {
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
         }
     },
     "author": "wanxiaodong",
